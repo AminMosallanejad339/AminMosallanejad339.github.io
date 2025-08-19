@@ -529,3 +529,78 @@
 </body>
 
 </html>
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8">
+  <title>ریپازیتوری‌های من</title>
+  <style>
+    body { font-family: sans-serif; direction: rtl; background: #f0f2f5; margin: 0; padding: 20px; }
+    h1 { text-align: center; color: #333; margin-bottom: 20px; }
+    #controls { max-width: 900px; margin: auto; display: flex; gap: 10px; margin-bottom: 20px; }
+    #search { flex: 1; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
+    #sort { padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; }
+    #repos { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
+    .card {
+      background: #fff; border-radius: 10px; padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card a { font-weight: bold; color: #0366d6; text-decoration: none; font-size: 18px; }
+    .desc { margin: 8px 0; font-size: 14px; color: #444; }
+    .meta { font-size: 13px; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>📂 ریپازیتوری‌های گیت‌هاب من</h1>
+
+  <div id="controls">
+    <input type="text" id="search" placeholder="جستجو در ریپازیتوری‌ها...">
+    <select id="sort">
+      <option value="updated">مرتب‌سازی بر اساس آخرین آپدیت</option>
+      <option value="stars">مرتب‌سازی بر اساس ستاره ⭐</option>
+      <option value="name">مرتب‌سازی بر اساس نام</option>
+    </select>
+  </div>
+
+  <div id="repos">در حال بارگذاری...</div>
+
+  <script>
+    let reposData = [];
+
+    async function fetchRepos() {
+      const res = await fetch("https://api.github.com/users/aminmosallanejad339/repos?per_page=100&sort=updated");
+      reposData = await res.json();
+      renderRepos();
+    }
+
+    function renderRepos() {
+      const searchVal = document.getElementById("search").value.toLowerCase();
+      const sortVal = document.getElementById("sort").value;
+      let repos = reposData.filter(r => r.name.toLowerCase().includes(searchVal) || (r.description || "").toLowerCase().includes(searchVal));
+
+      if (sortVal === "stars") {
+        repos.sort((a,b) => b.stargazers_count - a.stargazers_count);
+      } else if (sortVal === "name") {
+        repos.sort((a,b) => a.name.localeCompare(b.name));
+      } else {
+        repos.sort((a,b) => new Date(b.updated_at) - new Date(a.updated_at));
+      }
+
+      const container = document.getElementById("repos");
+      container.innerHTML = repos.map(repo => `
+        <div class="card">
+          <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+          <div class="desc">${repo.description || "بدون توضیح"}</div>
+          <div class="meta">⭐ ${repo.stargazers_count} | 👨‍💻 ${repo.language || "-"} | ⏱ ${new Date(repo.updated_at).toLocaleDateString("fa-IR")}</div>
+        </div>
+      `).join("");
+    }
+
+    document.getElementById("search").addEventListener("input", renderRepos);
+    document.getElementById("sort").addEventListener("change", renderRepos);
+
+    fetchRepos();
+  </script>
+</body>
+</html>
