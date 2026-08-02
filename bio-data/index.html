@@ -441,6 +441,11 @@
       border-color:rgba(124,58,237,0.15);
       background:rgba(124,58,237,0.06);
     }
+    .pill.gold{
+      color:var(--gold);
+      border-color:rgba(251,191,36,0.15);
+      background:rgba(251,191,36,0.06);
+    }
     .proj{
       padding:14px 0;
       border-top:1px solid rgba(255,255,255,0.04);
@@ -481,6 +486,9 @@
     .pub .pt{margin:0;font-size:13px;font-weight:600;line-height:1.4}
     .pub .pa{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary)}
     .pub .pj{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary);font-style:italic}
+    .pub .pl{margin:2px 0 0;font-size:11px;color:var(--dna-blue)}
+    .pub .pl a{color:var(--dna-blue);text-decoration:none}
+    .pub .pl a:hover{text-decoration:underline}
     .contact-row{
       display:flex;
       align-items:center;
@@ -562,6 +570,37 @@
       border-color:rgba(0,255,148,0.12);
       background:rgba(0,255,148,0.05);
     }
+    .badge-grid .badge.purple{
+      color:var(--ai-purple);
+      border-color:rgba(124,58,237,0.12);
+      background:rgba(124,58,237,0.05);
+    }
+    .badge-grid .badge.gold{
+      color:var(--gold);
+      border-color:rgba(251,191,36,0.12);
+      background:rgba(251,191,36,0.05);
+    }
+    .ref-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:6px;
+    }
+    .ref-item{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:10px;
+      padding:12px 14px;
+      font-size:11.5px;
+    }
+    .ref-item .rn{font-weight:600;color:var(--text-primary)}
+    .ref-item .rt{color:var(--text-secondary);font-size:10.5px;margin:2px 0}
+    .ref-item .re{color:var(--dna-blue);font-size:10.5px}
+    .ref-item .rp{color:var(--text-secondary);font-size:10.5px}
+
+    @media(max-width:500px){
+      .ref-grid{grid-template-columns:1fr}
+    }
 
     /* ---------- Hint ---------- */
     .hint{
@@ -635,7 +674,7 @@
         <a href="mailto:mosallanejadamin1400@gmail.com" aria-label="Email">
           <svg viewBox="0 0 24 24"><path d="M22 6L12 13L2 6M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6l10 7l10-7z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
         </a>
-        <a href="#" aria-label="Scholar">
+        <a href="https://civilica.com/search/result/?q=mosallanejad" target="_blank" aria-label="Scholar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/><path d="M2 7l10 5 10-5M12 22V12"/></svg>
         </a>
       </div>
@@ -659,11 +698,13 @@
     <h2 class="p-title">Amin Mosallanejad</h2>
     <p class="p-lead"><strong style="color:var(--bio-green)">Chemical Engineer</strong> → <strong style="color:var(--dna-blue)">Bio-Data Scientist</strong> · <span style="color:var(--ai-purple)">17+ years</span> industry experience</p>
     <p class="p-lead">Bridging <strong style="color:var(--bio-green)">biotechnology</strong>, <strong style="color:var(--dna-blue)">data science</strong>, and <strong style="color:var(--ai-purple)">bioinformatics</strong> to optimize industrial bioprocesses, wastewater treatment, and environmental systems using ML &amp; data engineering.</p>
+    <p class="p-lead" style="margin-top:-10px">📍 <strong>Location:</strong> Shiraz, Iran</p>
     <div class="pills">
       <span class="pill accent">🧪 Bioprocess Optimization</span>
       <span class="pill green">💧 Wastewater AI</span>
       <span class="pill purple">🧬 Bioinformatics</span>
       <span class="pill accent">📊 Data Pipelines</span>
+      <span class="pill gold">🔬 SuperPro</span>
     </div>
   </template>
 
@@ -675,7 +716,10 @@
         <h4>M.Sc. Data Science &amp; Business Analytics</h4>
         <div class="org"><span class="hl">Asia Pacific University (APU)</span> · Malaysia</div>
         <div class="date">2024–2025 · GPA 3.7/4 · Data Engineering</div>
-        <ul><li>Thesis: <strong style="color:var(--bio-green)">ML for Wastewater Process Performance</strong></li></ul>
+        <ul>
+          <li>Thesis: <strong style="color:var(--bio-green)">ML for Wastewater Process Performance</strong></li>
+          <li>Dual Degree with <strong style="color:var(--gold)">De Montfort University (DMU)</strong>, UK</li>
+        </ul>
       </div>
       <div class="t-item">
         <h4>M.Sc. Chemical Engineering — Biotechnology</h4>
@@ -701,18 +745,32 @@
         <div class="date">2017–2024</div>
         <ul>
           <li>Optimized 185 TPH water-tube boilers · Low NOx Burner</li>
-          <li>MED-TVC desalination · Ion exchange · Potable water</li>
-          <li>Wastewater treatment · Root cause analysis</li>
+          <li>MED-TVC desalination · Ion exchange (MIX Bed) · Potable water</li>
+          <li>Wastewater treatment (Activated Sludge · BioTower · SBR) · Root cause analysis</li>
+          <li>Nitrogen generation (Cryogenic · GAN &amp; LIN)</li>
+          <li>Chemical passivation &amp; loop chemistry optimization</li>
         </ul>
       </div>
-      <div class="t-item" style="border-bottom:none;padding-bottom:0">
-        <h4>Utility Plant Supervisor</h4>
+      <div class="t-item">
+        <h4>Utility Plant Supervisor / Senior Control Room</h4>
         <div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div>
         <div class="date">2007–2017</div>
         <ul>
-          <li>Supervised boilers, nitrogen, chillers, water/wastewater</li>
-          <li>DCS (Yokogawa) · Emergency response</li>
+          <li>Supervised boilers, nitrogen, chillers, water/wastewater systems</li>
+          <li>DCS (Yokogawa) · Emergency response coordination</li>
           <li>Equipment replacement policies · Shift coordination</li>
+          <li>Commissioning team member · Permit to Work (PTW) system</li>
+          <li>HSE compliance &amp; safety training coordination</li>
+        </ul>
+      </div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0">
+        <h4>Senior Operator - Utility Area</h4>
+        <div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div>
+        <div class="date">2003–2007</div>
+        <ul>
+          <li>Operation of oil/gas-fired boilers · Molecular sieve air dryers</li>
+          <li>Diesel generators · Chillers &amp; refrigeration packages</li>
+          <li>Water treatment · Desalination · Ion exchange · Drinking water</li>
         </ul>
       </div>
     </div>
@@ -724,17 +782,17 @@
     <div class="proj">
       <div class="proj-head"><h4>🧬 MachineLearning-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/MachineLearning-Theo" target="_blank">__GH__</a></div>
       <p>ML models for wastewater process optimization and energy reduction.</p>
-      <div class="pills"><span class="pill accent">Python</span><span class="pill">scikit-learn</span></div>
+      <div class="pills"><span class="pill accent">Python</span><span class="pill">scikit-learn</span><span class="pill">XGBoost</span></div>
     </div>
     <div class="proj">
       <div class="proj-head"><h4>🔄 Airflow-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/Airflow_Theo" target="_blank">__GH__</a></div>
       <p>Automated ETL pipelines for environmental sensor data using Apache Airflow.</p>
-      <div class="pills"><span class="pill accent">Airflow</span><span class="pill">Docker</span><span class="pill">Python</span></div>
+      <div class="pills"><span class="pill accent">Airflow</span><span class="pill">Docker</span><span class="pill">Python</span><span class="pill">PostgreSQL</span></div>
     </div>
     <div class="proj" style="border-bottom:none;padding-bottom:0">
       <div class="proj-head"><h4>📊 LabForLinux-Pro</h4><a class="gh" href="https://github.com/AminMosallanejad339/LabForLinux_Pro" target="_blank">__GH__</a></div>
       <p>Interactive dashboard for real-time water quality monitoring with Streamlit.</p>
-      <div class="pills"><span class="pill green">Streamlit</span><span class="pill">Analytics</span></div>
+      <div class="pills"><span class="pill green">Streamlit</span><span class="pill">Plotly</span><span class="pill">Analytics</span></div>
     </div>
     <a class="morelink" href="https://github.com/AminMosallanejad339" target="_blank">View all →</a>
   </template>
@@ -746,12 +804,14 @@
     <div class="pub">
       <div class="pt">Biodegradation of Gasoline &amp; Toluene in South Pars Gas Complex Using SuperPro Simulation</div>
       <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Fasihi, M.</div>
-      <div class="pj">⭐ 3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia</div>
+      <div class="pj">⭐ 3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia (2016)</div>
+      <div class="pl">🔗 <a href="https://civilica.com/doc/557571" target="_blank">civilica.com/doc/557571</a></div>
     </div>
     <div class="pub" style="border-bottom:none;padding-bottom:0">
       <div class="pt">Industrial Wastewater Treatment Performance — Activated Sludge &amp; Trickling Filter</div>
       <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Shiri, S.S.</div>
-      <div class="pj">⭐ 3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey</div>
+      <div class="pj">⭐ 3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey (2016)</div>
+      <div class="pl">🔗 <a href="https://civilica.com/doc/491464" target="_blank">civilica.com/doc/491464</a></div>
     </div>
   </template>
 
@@ -761,24 +821,106 @@
     <div style="margin:6px 0 12px">
       <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">🧬 Bioinformatics &amp; Biotech</div>
       <div class="badge-grid">
-        <span class="badge green">SuperPro</span><span class="badge">STOAT</span>
-        <span class="badge">ASPEN ONE</span><span class="badge green">Bioreactor</span>
+        <span class="badge green">SuperPro</span>
+        <span class="badge">STOAT</span>
+        <span class="badge">ASPEN ONE</span>
+        <span class="badge">ASPEN HYSYS</span>
+        <span class="badge green">AQUA Designer</span>
       </div>
     </div>
     <div style="margin:10px 0">
       <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">🤖 Data Science &amp; AI</div>
       <div class="badge-grid">
-        <span class="badge accent">Python</span><span class="badge">R</span>
-        <span class="badge accent">scikit-learn</span><span class="badge">PyTorch</span>
+        <span class="badge accent">Python</span>
+        <span class="badge">R</span>
+        <span class="badge accent">scikit-learn</span>
+        <span class="badge">PyTorch</span>
         <span class="badge">TensorFlow</span>
+        <span class="badge">Azure ML</span>
+      </div>
+    </div>
+    <div style="margin:10px 0">
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">⚙️ Data Engineering</div>
+      <div class="badge-grid">
+        <span class="badge accent">Spark</span>
+        <span class="badge">Docker</span>
+        <span class="badge">Airflow</span>
+        <span class="badge">Kafka</span>
+        <span class="badge">PostgreSQL</span>
+        <span class="badge">Hadoop</span>
+        <span class="badge">Git</span>
       </div>
     </div>
     <div style="margin:10px 0 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">⚙️ Data Engineering</div>
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">📊 Analytics &amp; Visualization</div>
       <div class="badge-grid">
-        <span class="badge accent">Spark</span><span class="badge">Docker</span>
-        <span class="badge">Airflow</span><span class="badge">Kafka</span>
-        <span class="badge">PostgreSQL</span><span class="badge">Git</span>
+        <span class="badge purple">Tableau</span>
+        <span class="badge purple">SAS</span>
+        <span class="badge">SPSS</span>
+        <span class="badge">Excel</span>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-certifications">
+    <div class="p-eyebrow"><span class="dot"></span>📜 Certifications</div>
+    <h2 class="p-title">Professional Certifications</h2>
+    <div class="timeline">
+      <div class="t-item">
+        <h4>Advanced Data Engineering Certification</h4>
+        <div class="org"><span class="hl">Sharif University of Technology</span> (ACECR) · 64 Hours</div>
+        <div class="date">2023</div>
+      </div>
+      <div class="t-item">
+        <h4>Python Programming in Bioinformatics</h4>
+        <div class="org"><span class="hl">University of Tehran</span> · 22 Hours</div>
+        <div class="date">2023</div>
+      </div>
+      <div class="t-item">
+        <h4>Bioinformatics Industrial Applications</h4>
+        <div class="org"><span class="hl">University of Tehran</span> · 12 Hours</div>
+        <div class="date">2023</div>
+      </div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0">
+        <h4>Applied Machine Learning Pipeline Mastery</h4>
+        <div class="org"><span class="hl">Coursera</span> · Verified Track</div>
+        <div class="date">2024</div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-languages">
+    <div class="p-eyebrow"><span class="dot"></span>🌐 Languages</div>
+    <h2 class="p-title">Language Proficiency</h2>
+    <div class="timeline">
+      <div class="t-item">
+        <h4>English <span style="color:var(--bio-green);font-weight:400;font-size:12px">· TOEFL iBT 98/120</span></h4>
+        <div class="org">Reading: 28 | Listening: 29 | Writing: 25 | Speaking: 16</div>
+        <div class="date">Fully exempt from institutional English testing (APU · DMU Dual Degree)</div>
+      </div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0">
+        <h4>Persian (Farsi)</h4>
+        <div class="org">Native · Full professional proficiency</div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-references">
+    <div class="p-eyebrow"><span class="dot"></span>📌 References</div>
+    <h2 class="p-title">References</h2>
+    <p class="p-lead">Academic and professional references available upon request.</p>
+    <div class="ref-grid">
+      <div class="ref-item">
+        <div class="rn">Dr. Nirase Fathima Abubacker</div>
+        <div class="rt">Associate Professor, School of Computing</div>
+        <div class="re">✉ nfathima.abubacker@apu.edu.my</div>
+        <div class="rp">📞 +60 3 8996 1000</div>
+      </div>
+      <div class="ref-item">
+        <div class="rn">Mr. Dhason Padmakumar</div>
+        <div class="rt">Senior Lecturer &amp; FYP Project Manager</div>
+        <div class="re">✉ dhason@apu.edu.my</div>
+        <div class="rp">📞 +60 12 271 1802</div>
       </div>
     </div>
   </template>
@@ -793,7 +935,11 @@
     </div>
     <div class="contact-row">
       <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <div><div class="k">Location</div><div class="v">Kuala Lumpur, Malaysia</div></div>
+      <div><div class="k">Location</div><div class="v">Shiraz, Iran</div></div>
+    </div>
+    <div class="contact-row">
+      <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .948.684l1.498 4.493a1 1 0 0 1-.502 1.21l-2.257 1.13a11.042 11.042 0 0 0 5.516 5.516l1.13-2.257a1 1 0 0 1 1.21-.502l4.493 1.498a1 1 0 0 1 .684.949V19a2 2 0 0 1-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+      <div><div class="k">Phone</div><div class="v">+98 917 017 1904</div></div>
     </div>
     <div class="contact-row" style="border-bottom:1px solid rgba(255,255,255,0.04)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
@@ -813,13 +959,16 @@
     const BLOG_COLOR='#FBBF24';
 
     const TOPICS = [
-      { id:'about',        label:'About',        side:'left',  lane:0 },
-      { id:'education',    label:'Education',    side:'left',  lane:1 },
-      { id:'experience',   label:'Experience',   side:'left',  lane:2 },
-      { id:'projects',     label:'Projects',     side:'right', lane:0 },
-      { id:'publications', label:'Publications', side:'right', lane:1 },
-      { id:'skills',       label:'Skills',       side:'right', lane:2 },
-      { id:'contact',      label:'Contact',      side:'top', blog:false },
+      { id:'about',          label:'About',         side:'left',  lane:0 },
+      { id:'education',      label:'Education',     side:'left',  lane:1 },
+      { id:'experience',     label:'Experience',    side:'left',  lane:2 },
+      { id:'projects',       label:'Projects',      side:'right', lane:0 },
+      { id:'publications',   label:'Publications',  side:'right', lane:1 },
+      { id:'skills',         label:'Skills',        side:'right', lane:2 },
+      { id:'certifications', label:'Certifications',side:'left',  lane:3 },
+      { id:'languages',      label:'Languages',     side:'right', lane:3 },
+      { id:'references',     label:'References',    side:'top',   blog:false },
+      { id:'contact',        label:'Contact',       side:'top',   blog:false },
     ];
 
     const stage = document.getElementById('stage');
@@ -854,7 +1003,7 @@
       const nodeXL = cx - photoR - sideOffset;
       const nodeXR = cx + photoR + sideOffset;
       const laneGap = Math.min(photoR + 56, H*(short?0.13:0.17));
-      const lanes = [cy - laneGap, cy, cy + laneGap];
+      const lanes = [cy - laneGap*1.5, cy - laneGap*0.5, cy + laneGap*0.5, cy + laneGap*1.5];
       const topY = Math.max(40, cy - photoR - Math.min(H*0.18, 140));
 
       identity.style.left='50%'; identity.style.transform='translateX(-50%)';
@@ -869,12 +1018,12 @@
       TOPICS.forEach((tp,i)=>{
         let sx, sy, nx, ny, d;
         if(tp.side==='top'){
-          sx=cx; sy=cy-photoR+2; nx=cx; ny=topY;
+          sx=cx; sy=cy-photoR+2; nx=cx; ny=topY - (tp.id==='references'? 30 : 0);
           d='M'+sx+','+sy+' L'+nx+','+ny;
         } else {
           const left = tp.side==='left';
           sy=cy; sx = left ? cx-photoR+2 : cx+photoR-2;
-          nx = left ? nodeXL : nodeXR; ny = lanes[tp.lane];
+          nx = left ? nodeXL : nodeXR; ny = lanes[tp.lane] || lanes[0];
           d = sidePath(sx, sy, nx, ny, left);
         }
 
