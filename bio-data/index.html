@@ -38,12 +38,12 @@
       background-repeat: no-repeat;
     }
 
-    /* لایه تیره‌کننده - سمت چپ تیره‌تر برای خوانایی، سمت راست شفاف برای دیده شدن پوستر */
+    /* لایه تیره‌کننده */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: linear-gradient(90deg, rgba(5,8,15,0.9) 30%, rgba(5,8,15,0.0) 100%);
+      background: linear-gradient(90deg, rgba(5,8,15,0.85) 30%, rgba(5,8,15,0.0) 100%);
       z-index: 0;
       pointer-events: none;
     }
@@ -55,7 +55,7 @@
       width:100%;height:100%;
       z-index:1;
       pointer-events:none;
-      opacity: 0.2;
+      opacity: 0.15;
     }
 
     /* ---------- Stage ---------- */
@@ -71,24 +71,24 @@
       width:100%;
       height:100%;
       display:block;
-      opacity: 0.2;
+      opacity: 0.3;
     }
 
-    /* خطوط عمودی منو */
+    /* خطوط اتصال زیبا */
     .gitline{
       fill:none;
       stroke:rgba(255,255,255,0.15);
-      stroke-width:2;
+      stroke-width:2.5;
       stroke-linecap:round;
       stroke-linejoin:round;
       transition:stroke .3s ease,stroke-width .3s ease,opacity .25s ease;
     }
     .gitline.dim{opacity:.1}
-    .gitline.hot{stroke:var(--theme-blue);stroke-width:2.5;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
+    .gitline.hot{stroke:var(--theme-blue);stroke-width:3;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
     .gitline.blog{stroke:var(--theme-gold)}
     .gitline.blog.hot{stroke:var(--theme-gold);filter:drop-shadow(0 0 8px rgba(251,191,36,0.3))}
 
-    /* گره‌های دکمه‌ها */
+    /* گره‌ها */
     .node{
       opacity:0;
       transition:opacity .4s ease,transform .3s ease;
@@ -155,8 +155,8 @@
       user-select:none;
       -webkit-user-drag:none;
       padding:5px;
-      width:130px; 
-      height:130px;
+      width:120px; 
+      height:120px;
     }
     .photo-wrap{
       position:relative;
@@ -232,7 +232,7 @@
       stroke-width:2;
     }
 
-    /* ---------- Leaf Labels (منوها - در پایین و چپ) ---------- */
+    /* ---------- Leaf Labels (منوها - دقیقاً در وسط صفحه) ---------- */
     .leaf{
       position:absolute;
       display:inline-flex;
@@ -241,9 +241,9 @@
       font-family:var(--font-mono);
       font-size:clamp(11px,1.2vw,14px);
       color:var(--text-primary);
-      background:rgba(0,0,0,0.5);
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
       border:1px solid rgba(255,255,255,0.15);
       padding:6px 16px;
       border-radius:10px;
@@ -256,13 +256,13 @@
       -webkit-tap-highlight-color:transparent;
     }
     .leaf.show{opacity:1}
-    .leaf.left{transform:translate(10%, -50%);} /* همه در سمت چپ کنار هم */
+    .leaf.center{transform:translate(10%, -50%);} /* منوها در مرکز */
     
     .leaf:hover,.leaf:focus-visible{
       background:rgba(0,212,255,0.15);
       border-color:var(--theme-blue);
     }
-    .leaf.left:hover{transform:translate(10%, -50%) scale(1.05)}
+    .leaf.center:hover{transform:translate(10%, -50%) scale(1.05)}
     .leaf .dot{
       width:8px;height:8px;
       border-radius:50%;
@@ -617,15 +617,15 @@
     const BLOG_COLOR='#FBBF24';
 
     const TOPICS = [
-      { id:'about',          label:'About',         side:'left',  pos:0 },
-      { id:'education',      label:'Education',     side:'left',  pos:1 },
-      { id:'experience',     label:'Experience',    side:'left',  pos:2 },
-      { id:'projects',       label:'Projects',      side:'left',  pos:3 },
-      { id:'publications',   label:'Publications',  side:'left',  pos:4 },
-      { id:'skills',         label:'Skills',        side:'left',  pos:5 },
-      { id:'certifications', label:'Certifications',side:'left',  pos:6 },
-      { id:'languages',      label:'Languages',     side:'left',  pos:7 },
-      { id:'contact',        label:'Contact',       side:'left',  pos:8 },
+      { id:'about',          label:'About',         pos:0 },
+      { id:'education',      label:'Education',     pos:1 },
+      { id:'experience',     label:'Experience',    pos:2 },
+      { id:'projects',       label:'Projects',      pos:3 },
+      { id:'publications',   label:'Publications',  pos:4 },
+      { id:'skills',         label:'Skills',        pos:5 },
+      { id:'certifications', label:'Certifications',pos:6 },
+      { id:'languages',      label:'Languages',     pos:7 },
+      { id:'contact',        label:'Contact',       pos:8 },
     ];
 
     const stage = document.getElementById('stage');
@@ -634,6 +634,18 @@
     const root = document.getElementById('root');
     const identity = document.getElementById('identity');
     let leaves = [];
+
+    // محاسبه مسیرهای منحنی زیبا
+    function curvedPath(sx, sy, nx, ny){
+      const dx = nx - sx;
+      const dy = ny - sy;
+      // تنظیم انحنا: نرم‌افزاری که خط از پایین لوگو به سمت ستون وسط می‌رود
+      const cp1x = sx + dx * 0.5;
+      const cp1y = sy;
+      const cp2x = nx - dx * 0.1;
+      const cp2y = ny;
+      return 'M'+sx+','+sy+' C'+cp1x+','+cp1y+' '+cp2x+','+cp2y+' '+nx+','+ny;
+    }
 
     function build(){
       const W = stage.clientWidth, H = stage.clientHeight;
@@ -645,13 +657,12 @@
       
       const photoR = photo.getBoundingClientRect().width/2 || 60;
       
-      // لوگو در سمت چپ
-      let logoX, logoY, textAlign, LeftPos;
+      // محاسبه مختصات لوگو و اطلاعات (سمت چپ)
+      let logoX, logoY, LeftPos;
       if(isMobile){
         logoX = cx;
         logoY = H * 0.08 + photoR;
         LeftPos = '50%';
-        textAlign = 'center';
         root.style.left = '50%'; root.style.transform = 'translateX(-50%)';
         identity.style.left = '50%'; identity.style.transform = 'translateX(-50%)';
         identity.style.alignItems = 'center';
@@ -659,7 +670,6 @@
         logoX = W * 0.05 + photoR;
         logoY = H * 0.08 + photoR;
         LeftPos = (W * 0.05) + 'px';
-        textAlign = 'flex-start';
         root.style.left = (W * 0.05) + 'px'; root.style.transform = 'none';
         identity.style.left = (W * 0.05) + 'px'; identity.style.transform = 'none';
         identity.style.alignItems = 'flex-start';
@@ -667,37 +677,35 @@
       root.style.top = (logoY - photoR) + 'px';
       identity.style.top = (logoY + photoR + 20) + 'px';
 
-      // محاسبه نقاط برای منوها (همه در سمت چپ، زیر هم)
+      // محاسبه ستون مرکزی (وسط صفحه)
       let menuX;
       if(isMobile){
         menuX = 40;
       } else {
-        // فاصله از لبه سمت چپ صفحه برای ستون منوها (کمی دورتر از لوگو)
-        menuX = (W * 0.05) + 180; 
+        menuX = W * 0.5; 
       }
       
-      // محاسبه نقطه شروع Y برای لیست منوها (درست زیر اطلاعات)
+      // محاسبه نقطه شروع Y برای لیست منوها
       let startY;
       if(isMobile){
         startY = H * 0.5;
       } else {
-        // این فاصله دقیقاً زیر آخرین تگ‌لاین (ML · Biotech ...) و آیکون‌ها محاسبه می‌شود
-        startY = logoY + photoR + 120; 
+        // شروع از بخش میانی صفحه (بین لوگو و عکس چهره)
+        startY = H * 0.25; 
       }
       
-      const laneGap = Math.min(60, H * 0.08);
+      const laneGap = Math.min(55, H * 0.07);
+      const startX = logoX;
+      const startYLine = logoY + photoR + 10; // نقطه خروج خط از زیر لوگو
       
       const items = [];
       TOPICS.forEach((tp,i)=>{
-        let sy = logoY + 10;
-        let sx = logoX;
-        
-        // محاسبه Y برای هر دکمه به صورت پله‌ای
+        // محاسبه Y برای هر دکمه
         let ny = startY + (i * laneGap);
         let nx = menuX;
         
-        // رسم خط اتصال مستقیم
-        let d = 'M'+sx+','+sy+' L'+nx+','+ny;
+        // رسم خط اتصال منحنی
+        let d = curvedPath(startX, startYLine, nx, ny);
 
         const path=document.createElementNS(SVGNS,'path');
         path.setAttribute('class','gitline');
@@ -723,7 +731,7 @@
         setTimeout(()=>g.classList.add('show'), delay+500);
 
         const leaf=document.createElement('button');
-        leaf.className='leaf left'; leaf.dataset.id=tp.id;
+        leaf.className='leaf center'; leaf.dataset.id=tp.id;
         leaf.style.setProperty('--leaf-color', ACCENT);
         let lx=nx-10, ly=ny;
         leaf.style.left=lx+'px'; leaf.style.top=ly+'px';
@@ -760,7 +768,7 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !overlay.hidden) closeOverlay(); });
 
     function sizePhoto(){
-      const d=Math.max(80, Math.min(130, Math.min(stage.clientWidth,stage.clientHeight)*0.18));
+      const d=Math.max(80, Math.min(120, Math.min(stage.clientWidth,stage.clientHeight)*0.18));
       photo.style.width=d+'px'; photo.style.height=d+'px';
     }
     function init(){ sizePhoto(); build(); }
