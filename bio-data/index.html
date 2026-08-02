@@ -23,7 +23,7 @@
       --theme-green:#00FF94;
       --theme-purple:#7C3AED;
       --theme-gold:#FBBF24;
-      --bg-deep:#0A0E1A;
+      --bg-deep:#05080F; /* Deeper background */
       --bg-card:rgba(17,24,39,0.85);
       --bg-card-hover:#1F2937;
       --text-primary:#F3F4F6;
@@ -39,9 +39,9 @@
       min-height:100vh;
       overflow:hidden;
       background-image:
-        radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.03) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(124,58,237,0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(0,255,148,0.02) 0%, transparent 50%);
+        radial-gradient(ellipse at 15% 50%, rgba(0,212,255,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 20%, rgba(124,58,237,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 85%, rgba(0,255,148,0.03) 0%, transparent 50%);
     }
 
     /* ---------- Particle Canvas ---------- */
@@ -125,7 +125,7 @@
       flex-direction:column;
       align-items:center;
       opacity:0;
-      animation:pop .8s cubic-bezier(.22,.9,.28,1.2) .18s forwards;
+      animation:pop .8s cubic-bezier(.22,.9,.28,1.2) .2s forwards;
     }
     @keyframes pop{
       from{opacity:0;transform:translateX(-50%) scale(.9)}
@@ -133,18 +133,19 @@
     }
 
     .photo{
-      object-fit:contain; /* Keeps logo shape */
-      border-radius:20px; /* Soft square corners like a pro logo */
+      object-fit:contain;
+      border-radius:20px;
       border:2px solid rgba(0,212,255,0.2);
       box-shadow:0 0 0 1px rgba(0,212,255,0.1), 0 20px 60px -20px rgba(0,0,0,0.8);
       background:transparent;
       user-select:none;
       -webkit-user-drag:none;
-      padding:5px; /* Space between logo and border */
+      padding:5px;
     }
     .photo-wrap{
       position:relative;
       border-radius:20px;
+      margin-bottom:8px; /* Added spacing below logo */
     }
     .photo-wrap .ring{
       position:absolute;
@@ -164,18 +165,18 @@
       position:absolute;
       inset:-24px;
       border-radius:20px;
-      background:radial-gradient(circle,rgba(0,212,255,0.08),transparent 70%);
+      background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); /* Enhanced Glow */
       filter:blur(24px);
       pointer-events:none;
     }
 
     .name{
       font-family:var(--font-display);
-      margin:14px 0 0;
+      margin:12px 0 6px; /* Adjusted spacing */
       font-weight:700;
       letter-spacing:-0.5px;
       white-space:nowrap;
-      font-size:clamp(24px,3vw,32px);
+      font-size:clamp(26px,3.2vw,34px);
       text-align:center;
       line-height:1.15;
       background:linear-gradient(135deg,#fff 30%,var(--theme-blue));
@@ -185,14 +186,14 @@
     }
     .tagline{
       font-family:var(--font-body);
-      margin:5px 0 0;
+      margin:4px 0 0;
       color:var(--text-secondary);
       font-size:clamp(12px,1.3vw,15px);
       text-align:center;
       white-space:nowrap;
     }
     .tagline-2{
-      margin-top:2px;
+      margin-top:4px; /* Increased spacing */
       color:var(--theme-green);
       font-weight:500;
       font-size:clamp(11px,1.1vw,14px);
@@ -200,7 +201,7 @@
     .socials-row{
       display:flex;
       gap:10px;
-      margin-top:16px;
+      margin-top:18px; /* Increased spacing */
       justify-content:center;
     }
     .socials-row a{
@@ -287,7 +288,7 @@
     .scrim{
       position:absolute;
       inset:0;
-      background:rgba(10,14,26,0.8);
+      background:rgba(5,8,15,0.85); /* Darker scrim */
       backdrop-filter:blur(12px);
       -webkit-backdrop-filter:blur(12px);
       animation:fade .3s ease;
@@ -498,15 +499,6 @@
       border-top:1px solid rgba(255,255,255,0.04);
     }
     .contact-row:first-of-type{border-top:none}
-    .contact-row .ico{
-      width:20px;height:20px;
-      flex:none;
-      color:var(--theme-blue);
-      display:block;
-      stroke:currentColor;
-      fill:none;
-      stroke-width:2;
-    }
     .contact-row .k{
       font-family:var(--font-mono);
       font-size:11px;
@@ -580,27 +572,6 @@
       color:var(--theme-gold);
       border-color:rgba(251,191,36,0.12);
       background:rgba(251,191,36,0.05);
-    }
-    .ref-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:6px;
-    }
-    .ref-item{
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:10px;
-      padding:12px 14px;
-      font-size:11.5px;
-    }
-    .ref-item .rn{font-weight:600;color:var(--text-primary)}
-    .ref-item .rt{color:var(--text-secondary);font-size:10.5px;margin:2px 0}
-    .ref-item .re{color:var(--theme-blue);font-size:10.5px}
-    .ref-item .rp{color:var(--text-secondary);font-size:10.5px}
-
-    @media(max-width:500px){
-      .ref-grid{grid-template-columns:1fr}
     }
 
     /* ---------- Hint ---------- */
@@ -693,13 +664,13 @@
     </div>
   </div>
 
-  <!-- Templates (Emojis Removed) -->
+  <!-- Templates -->
   <template id="tpl-about">
     <div class="p-eyebrow"><span class="dot"></span>About</div>
     <h2 class="p-title">Amin Mosallanejad</h2>
-    <p class="p-lead"><strong style="color:var(--theme-green)">Chemical Engineer</strong> → <strong style="color:var(--theme-blue)">Bio-Data Scientist</strong> · <span style="color:var(--theme-purple)">17+ years</span> industry experience</p>
-    <p class="p-lead">Bridging <strong style="color:var(--theme-green)">biotechnology</strong>, <strong style="color:var(--theme-blue)">data science</strong>, and <strong style="color:var(--theme-purple)">bioinformatics</strong> to optimize industrial bioprocesses, wastewater treatment, and environmental systems using ML &amp; data engineering.</p>
-    <p class="p-lead" style="margin-top:-10px"><strong>Location:</strong> Shiraz, Iran</p>
+    <p class="p-lead">
+      A Chemical Engineer turned Bio-Data Scientist with over 17 years of industrial expertise, specializing in bridging the gap between biotechnology, data science, and bioinformatics. Passionate about leveraging machine learning and advanced data engineering to optimize industrial bioprocesses, revolutionize wastewater treatment, and enhance environmental systems.
+    </p>
     <div class="pills">
       <span class="pill accent">Bioprocess Optimization</span>
       <span class="pill green">Wastewater AI</span>
@@ -906,44 +877,20 @@
     </div>
   </template>
 
-  <template id="tpl-references">
-    <div class="p-eyebrow"><span class="dot"></span>References</div>
-    <h2 class="p-title">References</h2>
-    <p class="p-lead">Academic and professional references available upon request.</p>
-    <div class="ref-grid">
-      <div class="ref-item">
-        <div class="rn">Dr. Nirase Fathima Abubacker</div>
-        <div class="rt">Associate Professor, School of Computing</div>
-        <div class="re">✉ nfathima.abubacker@apu.edu.my</div>
-        <div class="rp">📞 +60 3 8996 1000</div>
-      </div>
-      <div class="ref-item">
-        <div class="rn">Mr. Dhason Padmakumar</div>
-        <div class="rt">Senior Lecturer &amp; FYP Project Manager</div>
-        <div class="re">✉ dhason@apu.edu.my</div>
-        <div class="rp">📞 +60 12 271 1802</div>
-      </div>
-    </div>
-  </template>
-
   <template id="tpl-contact">
     <div class="p-eyebrow"><span class="dot"></span>Contact</div>
     <h2 class="p-title">Let's Connect</h2>
     <p class="p-lead">Open to research collaboration, consulting, and data engineering in <strong style="color:var(--theme-green)">biotech</strong>, <strong style="color:var(--theme-blue)">bioinformatics</strong>, and <strong style="color:var(--theme-purple)">industrial AI</strong>.</p>
     <div class="contact-row">
-      <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 6L12 13L2 6M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6l10 7l10-7z"/></svg>
       <div><div class="k">Email</div><div class="v">mosallanejadamin1400@gmail.com</div></div>
     </div>
     <div class="contact-row">
-      <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
       <div><div class="k">Location</div><div class="v">Shiraz, Iran</div></div>
     </div>
     <div class="contact-row">
-      <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .948.684l1.498 4.493a1 1 0 0 1-.502 1.21l-2.257 1.13a11.042 11.042 0 0 0 5.516 5.516l1.13-2.257a1 1 0 0 1 1.21-.502l4.493 1.498a1 1 0 0 1 .684.949V19a2 2 0 0 1-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
       <div><div class="k">Phone</div><div class="v">+98 917 017 1904</div></div>
     </div>
     <div class="contact-row" style="border-bottom:1px solid rgba(255,255,255,0.04)">
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
       <div><div class="k">GitHub</div><div class="v"><a href="https://github.com/AminMosallanejad339" target="_blank" style="color:var(--theme-blue);text-decoration:none">AminMosallanejad339</a></div></div>
     </div>
     <a class="btn" href="https://www.linkedin.com/in/amin-mosallanejad" target="_blank">
@@ -968,7 +915,6 @@
       { id:'skills',         label:'Skills',        side:'right', lane:2 },
       { id:'certifications', label:'Certifications',side:'left',  lane:3 },
       { id:'languages',      label:'Languages',     side:'right', lane:3 },
-      { id:'references',     label:'References',    side:'top',   blog:false },
       { id:'contact',        label:'Contact',       side:'top',   blog:false },
     ];
 
@@ -1019,7 +965,7 @@
       TOPICS.forEach((tp,i)=>{
         let sx, sy, nx, ny, d;
         if(tp.side==='top'){
-          sx=cx; sy=cy-photoR+2; nx=cx; ny=topY - (tp.id==='references'? 30 : 0);
+          sx=cx; sy=cy-photoR+2; nx=cx; ny=topY - (tp.id==='contact'? 0 : 0);
           d='M'+sx+','+sy+' L'+nx+','+ny;
         } else {
           const left = tp.side==='left';
