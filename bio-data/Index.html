@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amin Mosallanejad · Bio-Data Scientist</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    :root{
+      --font-display:'Space Grotesk',sans-serif;
+      --font-body:'Inter',sans-serif;
+      --font-mono:'JetBrains Mono',monospace;
+
+      /* Bio-Data Colors */
+      --dna-blue:#00D4FF;
+      --bio-green:#00FF94;
+      --ai-purple:#7C3AED;
+      --gold:#FBBF24;
+      --bg-deep:#0A0E1A;
+      --bg-card:rgba(17,24,39,0.85);
+      --bg-card-hover:#1F2937;
+      --text-primary:#F3F4F6;
+      --text-secondary:#9CA3AF;
+      --border-glow:rgba(0,212,255,0.12);
+      --shadow-glow:0 0 60px rgba(0,212,255,0.04);
+    }
+
+    body{
+      font-family:var(--font-body);
+      background:var(--bg-deep);
+      color:var(--text-primary);
+      min-height:100vh;
+      overflow:hidden;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.03) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(124,58,237,0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(0,255,148,0.02) 0%, transparent 50%);
+    }
+
+    /* ---------- Particle Canvas ---------- */
+    #particles-canvas{
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    /* ---------- Stage ---------- */
+    .stage{
+      position:fixed;
+      inset:0;
+      z-index:1;
+      overflow:hidden;
+    }
+    .branches{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    /* Git lines */
+    .gitline{
+      fill:none;
+      stroke:rgba(255,255,255,0.08);
+      stroke-width:2.5;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      transition:stroke .3s ease,stroke-width .3s ease,opacity .25s ease;
+    }
+    .gitline.dim{opacity:.15}
+    .gitline.hot{stroke:var(--dna-blue);stroke-width:3.5;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
+    .gitline.blog{stroke:var(--gold)}
+    .gitline.blog.hot{stroke:var(--gold);filter:drop-shadow(0 0 8px rgba(251,191,36,0.3))}
+
+    /* Nodes */
+    .node{
+      opacity:0;
+      transition:opacity .4s ease,transform .3s ease;
+      transform-box:fill-box;
+      transform-origin:center;
+    }
+    .node.show{opacity:1}
+    .node.dim{opacity:.2}
+    .node.hot{transform:scale(1.5)}
+    .node-core{
+      fill:rgba(255,255,255,0.15);
+      stroke:var(--bg-deep);
+      stroke-width:2.5px;
+      transition:fill .3s ease;
+    }
+    .node.hot .node-core{fill:var(--dna-blue);box-shadow:0 0 20px rgba(0,212,255,0.4)}
+    .node.blog .node-core{fill:var(--gold)}
+    .node-halo{
+      fill:var(--dna-blue);
+      opacity:0;
+      transition:opacity .3s ease;
+    }
+    .node.blog .node-halo{fill:var(--gold)}
+    .node.hot .node-halo{opacity:.25}
+
+    /* ---------- Root (Profile) ---------- */
+    .root{
+      position:absolute;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      z-index:6;
+      opacity:0;
+      animation:pop .8s cubic-bezier(.22,.9,.28,1.2) .05s forwards;
+    }
+    .identity{
+      position:absolute;
+      z-index:6;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      opacity:0;
+      animation:pop .8s cubic-bezier(.22,.9,.28,1.2) .18s forwards;
+    }
+    @keyframes pop{
+      from{opacity:0;transform:translateX(-50%) scale(.9)}
+      to{opacity:1;transform:translateX(-50%)}
+    }
+
+    .photo{
+      border-radius:50%;
+      object-fit:cover;
+      border:3px solid rgba(0,212,255,0.2);
+      box-shadow:0 0 0 1px rgba(0,212,255,0.1), 0 20px 60px -20px rgba(0,0,0,0.8);
+      background:var(--bg-card);
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+    .photo-wrap{
+      position:relative;
+      border-radius:50%;
+    }
+    .photo-wrap .ring{
+      position:absolute;
+      inset:-6px;
+      border-radius:50%;
+      border:2px solid transparent;
+      background:linear-gradient(135deg,var(--dna-blue),var(--ai-purple),var(--bio-green)) border-box;
+      -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      animation:spin-ring 10s linear infinite;
+    }
+    @keyframes spin-ring{
+      to{transform:rotate(360deg)}
+    }
+    .photo-wrap .glow{
+      position:absolute;
+      inset:-24px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(0,212,255,0.08),transparent 70%);
+      filter:blur(24px);
+      pointer-events:none;
+    }
+
+    .name{
+      font-family:var(--font-display);
+      margin:14px 0 0;
+      font-weight:700;
+      letter-spacing:-0.5px;
+      white-space:nowrap;
+      font-size:clamp(24px,3vw,32px);
+      text-align:center;
+      line-height:1.15;
+      background:linear-gradient(135deg,#fff 30%,var(--dna-blue));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .tagline{
+      font-family:var(--font-body);
+      margin:5px 0 0;
+      color:var(--text-secondary);
+      font-size:clamp(12px,1.3vw,15px);
+      text-align:center;
+      white-space:nowrap;
+    }
+    .tagline-2{
+      margin-top:2px;
+      color:var(--bio-green);
+      font-weight:500;
+      font-size:clamp(11px,1.1vw,14px);
+    }
+    .socials-row{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      justify-content:center;
+    }
+    .socials-row a{
+      width:38px;height:38px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--text-secondary);
+      transition:all .3s ease;
+    }
+    .socials-row a:hover{
+      transform:translateY(-3px);
+      border-color:var(--dna-blue);
+      color:var(--dna-blue);
+      background:rgba(0,212,255,0.06);
+      box-shadow:0 8px 30px rgba(0,212,255,0.08);
+    }
+    .socials-row svg{
+      width:17px;height:17px;
+      display:block;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:2;
+    }
+
+    /* ---------- Leaf Labels ---------- */
+    .leaf{
+      position:absolute;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-family:var(--font-mono);
+      font-size:clamp(11px,1.2vw,14px);
+      letter-spacing:-0.1px;
+      color:var(--text-primary);
+      background:rgba(17,24,39,0.75);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:5px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      z-index:7;
+      opacity:0;
+      transition:opacity .5s ease,background .3s,border-color .3s,transform .3s;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .leaf.show{opacity:1}
+    .leaf.left{transform:translate(-100%,-50%);flex-direction:row-reverse}
+    .leaf.right{transform:translate(0,-50%)}
+    .leaf.top{transform:translate(-50%,-100%)}
+    .leaf:hover,.leaf:focus-visible{
+      background:rgba(0,212,255,0.08);
+      border-color:var(--leaf-color);
+      transform:translate(-100%,-50%) scale(1.04);
+      outline:none;
+    }
+    .leaf.right:hover{transform:translate(0,-50%) scale(1.04)}
+    .leaf.top:hover{transform:translate(-50%,-100%) scale(1.04)}
+    .leaf .dot{
+      width:8px;height:8px;
+      border-radius:50%;
+      background:var(--leaf-color);
+      flex:none;
+      box-shadow:0 0 16px var(--leaf-color);
+    }
+
+    /* ---------- Overlay ---------- */
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:40;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
+    .overlay[hidden]{display:none}
+    .scrim{
+      position:absolute;
+      inset:0;
+      background:rgba(10,14,26,0.8);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      animation:fade .3s ease;
+    }
+    .sheet{
+      position:relative;
+      width:min(700px,100%);
+      max-height:88vh;
+      overflow:auto;
+      background:rgba(17,24,39,0.92);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:24px;
+      box-shadow:0 24px 80px rgba(0,0,0,0.6);
+      padding:36px 34px 40px;
+      animation:rise .35s cubic-bezier(.2,.85,.3,1);
+    }
+    .sheet::before{
+      content:'';
+      position:absolute;
+      top:0;left:0;right:0;
+      height:4px;
+      background:linear-gradient(90deg,var(--dna-blue),var(--ai-purple),var(--bio-green));
+      border-radius:24px 24px 0 0;
+    }
+    .sheet-close{
+      position:absolute;
+      top:14px;right:14px;
+      width:34px;height:34px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.06);
+      background:rgba(255,255,255,0.04);
+      color:var(--text-secondary);
+      cursor:pointer;
+      font-size:15px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:all .3s ease;
+    }
+    .sheet-close:hover{
+      color:var(--text-primary);
+      transform:rotate(90deg);
+      background:rgba(255,255,255,0.06);
+    }
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+    @keyframes rise{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+
+    /* ---------- Panel Content ---------- */
+    .p-eyebrow{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      font-family:var(--font-mono);
+      color:var(--dna-blue);
+      font-size:11px;
+      font-weight:500;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin:0 0 8px;
+    }
+    .p-eyebrow .dot{
+      width:8px;height:8px;
+      border-radius:50%;
+      background:var(--dna-blue);
+    }
+    .p-title{
+      font-family:var(--font-display);
+      font-weight:600;
+      font-size:28px;
+      margin:0 0 4px;
+      letter-spacing:-0.5px;
+    }
+    .p-lead{
+      color:var(--text-secondary);
+      margin:0 0 20px;
+      font-size:13px;
+      line-height:1.7;
+    }
+    .timeline{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .t-item{
+      padding-left:16px;
+      border-left:2px solid rgba(255,255,255,0.06);
+      position:relative;
+    }
+    .t-item::before{
+      content:'';
+      position:absolute;
+      left:-6px;top:5px;
+      width:10px;height:10px;
+      border-radius:50%;
+      background:var(--dna-blue);
+      box-shadow:0 0 20px rgba(0,212,255,0.2);
+    }
+    .t-item h4{
+      margin:0;
+      font-size:13.5px;
+      font-weight:600;
+    }
+    .t-item .org{
+      margin:2px 0 0;
+      font-size:12.5px;
+      color:var(--text-secondary);
+    }
+    .t-item .org .hl{color:var(--bio-green)}
+    .t-item .date{
+      margin:4px 0 0;
+      font-family:var(--font-mono);
+      font-size:11.5px;
+      color:var(--text-secondary);
+      letter-spacing:0;
+    }
+    .t-item ul{
+      font-size:12px;
+      color:var(--text-secondary);
+      padding-left:18px;
+      margin:4px 0 0;
+      line-height:1.6;
+    }
+    .pills{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .pill{
+      font-size:10.5px;
+      color:var(--text-secondary);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:4px 12px;
+      border-radius:999px;
+      font-family:var(--font-mono);
+    }
+    .pill.accent{
+      color:var(--dna-blue);
+      border-color:rgba(0,212,255,0.15);
+      background:rgba(0,212,255,0.06);
+    }
+    .pill.green{
+      color:var(--bio-green);
+      border-color:rgba(0,255,148,0.15);
+      background:rgba(0,255,148,0.06);
+    }
+    .pill.purple{
+      color:var(--ai-purple);
+      border-color:rgba(124,58,237,0.15);
+      background:rgba(124,58,237,0.06);
+    }
+    .proj{
+      padding:14px 0;
+      border-top:1px solid rgba(255,255,255,0.04);
+    }
+    .proj:first-of-type{border-top:none;padding-top:0}
+    .proj-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .proj-head h4{
+      margin:0;font-size:14px;font-weight:600;
+    }
+    .proj p{
+      margin:4px 0 8px;
+      font-size:12.5px;
+      line-height:1.5;
+      color:var(--text-secondary);
+    }
+    .proj a.gh{
+      color:var(--text-secondary);
+      display:inline-flex;
+      transition:color .3s;
+      flex:none;
+    }
+    .proj a.gh:hover{color:var(--dna-blue)}
+    .proj a.gh svg{width:17px;height:17px;fill:currentColor}
+    .pub-year{
+      font-family:var(--font-mono);
+      font-size:15px;
+      font-weight:500;
+      color:var(--gold);
+      margin:18px 0 10px;
+    }
+    .pub-year:first-child{margin-top:0}
+    .pub{margin:0 0 12px}
+    .pub .pt{margin:0;font-size:13px;font-weight:600;line-height:1.4}
+    .pub .pa{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary)}
+    .pub .pj{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary);font-style:italic}
+    .contact-row{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:12px 0;
+      border-top:1px solid rgba(255,255,255,0.04);
+    }
+    .contact-row:first-of-type{border-top:none}
+    .contact-row .ico{
+      width:20px;height:20px;
+      flex:none;
+      color:var(--dna-blue);
+      display:block;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:2;
+    }
+    .contact-row .k{
+      font-family:var(--font-mono);
+      font-size:11px;
+      color:var(--text-secondary);
+      letter-spacing:.5px;
+      text-transform:uppercase;
+    }
+    .contact-row .v{font-size:13px;margin-top:2px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:20px;
+      background:linear-gradient(135deg,var(--dna-blue),var(--ai-purple));
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      padding:10px 20px;
+      font-family:var(--font-body);
+      font-size:13px;
+      font-weight:600;
+      text-decoration:none;
+      cursor:pointer;
+      transition:all .3s ease;
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 30px rgba(0,212,255,0.2);
+    }
+    .btn svg{width:15px;height:15px;fill:currentColor}
+    .morelink{
+      display:inline-block;
+      margin-top:14px;
+      color:var(--dna-blue);
+      font-size:12.5px;
+      font-weight:500;
+      text-decoration:none;
+    }
+    .morelink:hover{text-decoration:underline}
+    .badge-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      margin:4px 0 0;
+    }
+    .badge-grid .badge{
+      font-size:10px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:3px 10px;
+      border-radius:999px;
+      color:var(--text-secondary);
+      font-family:var(--font-mono);
+    }
+    .badge-grid .badge.accent{
+      color:var(--dna-blue);
+      border-color:rgba(0,212,255,0.12);
+      background:rgba(0,212,255,0.05);
+    }
+    .badge-grid .badge.green{
+      color:var(--bio-green);
+      border-color:rgba(0,255,148,0.12);
+      background:rgba(0,255,148,0.05);
+    }
+
+    /* ---------- Hint ---------- */
+    .hint{
+      position:fixed;
+      left:0;right:0;
+      bottom:16px;
+      text-align:center;
+      font-family:var(--font-mono);
+      color:var(--text-secondary);
+      font-size:12px;
+      z-index:6;
+      opacity:0;
+      animation:fadein 1.2s ease 1.4s forwards;
+      pointer-events:none;
+      letter-spacing:0.3px;
+    }
+    @keyframes fadein{to{opacity:0.5}}
+
+    /* ---------- Responsive ---------- */
+    @media(max-width:640px){
+      .leaf{font-size:10px;padding:4px 10px}
+      .tagline{font-size:11px}
+      .socials-row a{width:32px;height:32px}
+      .socials-row svg{width:15px;height:15px}
+      .sheet{padding:28px 20px 32px}
+      .p-title{font-size:24px}
+      .name{font-size:22px}
+    }
+    @media(max-height:560px){
+      .socials-row a{width:30px;height:30px;border-radius:8px}
+      .socials-row{gap:8px;margin-top:10px}
+      .name{margin-top:10px;font-size:20px}
+      .hint{display:none}
+      .tagline-2{font-size:10px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Canvas -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Theme Toggle -->
+  <button style="position:fixed;top:18px;right:18px;z-index:20;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(17,24,39,0.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);color:var(--text-secondary);transition:all .3s ease" id="themeToggle" aria-label="Toggle theme">
+    <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+  </button>
+
+  <!-- Stage -->
+  <main class="stage" id="stage">
+    <svg class="branches" id="branches" aria-hidden="true"></svg>
+
+    <div class="root" id="root">
+      <div class="photo-wrap">
+        <div class="glow"></div>
+        <div class="ring"></div>
+        <img class="photo" id="photo" src="https://ui-avatars.com/api/?name=Amin+Mosallanejad&size=200&background=0A0E1A&color=00D4FF&bold=true" alt="Amin Mosallanejad">
+      </div>
+    </div>
+
+    <div class="identity" id="identity">
+      <h1 class="name">Amin Mosallanejad</h1>
+      <p class="tagline">Bio-Data Scientist · Chemical Engineer</p>
+      <p class="tagline tagline-2">🧬 ML · Biotech · Data Engineering</p>
+      <div class="socials-row">
+        <a href="https://github.com/AminMosallanejad339" target="_blank" aria-label="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/amin-mosallanejad" target="_blank" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+        </a>
+        <a href="mailto:mosallanejadamin1400@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24"><path d="M22 6L12 13L2 6M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6l10 7l10-7z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </a>
+        <a href="#" aria-label="Scholar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/><path d="M2 7l10 5 10-5M12 22V12"/></svg>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <p class="hint">✦ Click a branch to explore ✦</p>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" hidden>
+    <div class="scrim" data-close></div>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <button class="sheet-close" data-close aria-label="Close">✕</button>
+      <div id="sheetBody"></div>
+    </div>
+  </div>
+
+  <!-- Templates -->
+  <template id="tpl-about">
+    <div class="p-eyebrow"><span class="dot"></span>🧬 About</div>
+    <h2 class="p-title">Amin Mosallanejad</h2>
+    <p class="p-lead"><strong style="color:var(--bio-green)">Chemical Engineer</strong> → <strong style="color:var(--dna-blue)">Bio-Data Scientist</strong> · <span style="color:var(--ai-purple)">17+ years</span> industry experience</p>
+    <p class="p-lead">Bridging <strong style="color:var(--bio-green)">biotechnology</strong>, <strong style="color:var(--dna-blue)">data science</strong>, and <strong style="color:var(--ai-purple)">bioinformatics</strong> to optimize industrial bioprocesses, wastewater treatment, and environmental systems using ML &amp; data engineering.</p>
+    <div class="pills">
+      <span class="pill accent">🧪 Bioprocess Optimization</span>
+      <span class="pill green">💧 Wastewater AI</span>
+      <span class="pill purple">🧬 Bioinformatics</span>
+      <span class="pill accent">📊 Data Pipelines</span>
+    </div>
+  </template>
+
+  <template id="tpl-education">
+    <div class="p-eyebrow"><span class="dot"></span>🎓 Education</div>
+    <h2 class="p-title">Education</h2>
+    <div class="timeline">
+      <div class="t-item">
+        <h4>M.Sc. Data Science &amp; Business Analytics</h4>
+        <div class="org"><span class="hl">Asia Pacific University (APU)</span> · Malaysia</div>
+        <div class="date">2024–2025 · GPA 3.7/4 · Data Engineering</div>
+        <ul><li>Thesis: <strong style="color:var(--bio-green)">ML for Wastewater Process Performance</strong></li></ul>
+      </div>
+      <div class="t-item">
+        <h4>M.Sc. Chemical Engineering — Biotechnology</h4>
+        <div class="org"><span class="hl">Islamic Azad University</span> · Quchan, Iran</div>
+        <div class="date">2013–2016 · GPA 18.14/20</div>
+        <ul><li>Thesis: Hydrocarbon Sludge Biodegradation · <strong style="color:var(--dna-blue)">SuperPro</strong> simulation</li></ul>
+      </div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0">
+        <h4>B.Sc. Chemical Engineering — Refining</h4>
+        <div class="org"><span class="hl">Islamic Azad University</span> · Gachsaran, Iran</div>
+        <div class="date">1998–2003 · GPA 14.75/20</div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-experience">
+    <div class="p-eyebrow"><span class="dot"></span>⚙️ Experience</div>
+    <h2 class="p-title">Industry Experience</h2>
+    <div class="timeline">
+      <div class="t-item">
+        <h4>Senior Utility Engineer</h4>
+        <div class="org"><span class="hl">South Pars Gas Complex</span> · Phase 19</div>
+        <div class="date">2017–2024</div>
+        <ul>
+          <li>Optimized 185 TPH water-tube boilers · Low NOx Burner</li>
+          <li>MED-TVC desalination · Ion exchange · Potable water</li>
+          <li>Wastewater treatment · Root cause analysis</li>
+        </ul>
+      </div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0">
+        <h4>Utility Plant Supervisor</h4>
+        <div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div>
+        <div class="date">2007–2017</div>
+        <ul>
+          <li>Supervised boilers, nitrogen, chillers, water/wastewater</li>
+          <li>DCS (Yokogawa) · Emergency response</li>
+          <li>Equipment replacement policies · Shift coordination</li>
+        </ul>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-projects">
+    <div class="p-eyebrow"><span class="dot"></span>🚀 Projects</div>
+    <h2 class="p-title">Bio-Data Projects</h2>
+    <div class="proj">
+      <div class="proj-head"><h4>🧬 MachineLearning-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/MachineLearning-Theo" target="_blank">__GH__</a></div>
+      <p>ML models for wastewater process optimization and energy reduction.</p>
+      <div class="pills"><span class="pill accent">Python</span><span class="pill">scikit-learn</span></div>
+    </div>
+    <div class="proj">
+      <div class="proj-head"><h4>🔄 Airflow-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/Airflow_Theo" target="_blank">__GH__</a></div>
+      <p>Automated ETL pipelines for environmental sensor data using Apache Airflow.</p>
+      <div class="pills"><span class="pill accent">Airflow</span><span class="pill">Docker</span><span class="pill">Python</span></div>
+    </div>
+    <div class="proj" style="border-bottom:none;padding-bottom:0">
+      <div class="proj-head"><h4>📊 LabForLinux-Pro</h4><a class="gh" href="https://github.com/AminMosallanejad339/LabForLinux_Pro" target="_blank">__GH__</a></div>
+      <p>Interactive dashboard for real-time water quality monitoring with Streamlit.</p>
+      <div class="pills"><span class="pill green">Streamlit</span><span class="pill">Analytics</span></div>
+    </div>
+    <a class="morelink" href="https://github.com/AminMosallanejad339" target="_blank">View all →</a>
+  </template>
+
+  <template id="tpl-publications">
+    <div class="p-eyebrow"><span class="dot"></span>📄 Publications</div>
+    <h2 class="p-title">Research</h2>
+    <p class="p-lead">Peer-reviewed work in biotechnology and environmental engineering.</p>
+    <div class="pub">
+      <div class="pt">Biodegradation of Gasoline &amp; Toluene in South Pars Gas Complex Using SuperPro Simulation</div>
+      <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Fasihi, M.</div>
+      <div class="pj">⭐ 3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia</div>
+    </div>
+    <div class="pub" style="border-bottom:none;padding-bottom:0">
+      <div class="pt">Industrial Wastewater Treatment Performance — Activated Sludge &amp; Trickling Filter</div>
+      <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Shiri, S.S.</div>
+      <div class="pj">⭐ 3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey</div>
+    </div>
+  </template>
+
+  <template id="tpl-skills">
+    <div class="p-eyebrow"><span class="dot"></span>🧰 Skills</div>
+    <h2 class="p-title">Bio-Data Stack</h2>
+    <div style="margin:6px 0 12px">
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">🧬 Bioinformatics &amp; Biotech</div>
+      <div class="badge-grid">
+        <span class="badge green">SuperPro</span><span class="badge">STOAT</span>
+        <span class="badge">ASPEN ONE</span><span class="badge green">Bioreactor</span>
+      </div>
+    </div>
+    <div style="margin:10px 0">
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">🤖 Data Science &amp; AI</div>
+      <div class="badge-grid">
+        <span class="badge accent">Python</span><span class="badge">R</span>
+        <span class="badge accent">scikit-learn</span><span class="badge">PyTorch</span>
+        <span class="badge">TensorFlow</span>
+      </div>
+    </div>
+    <div style="margin:10px 0 0">
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">⚙️ Data Engineering</div>
+      <div class="badge-grid">
+        <span class="badge accent">Spark</span><span class="badge">Docker</span>
+        <span class="badge">Airflow</span><span class="badge">Kafka</span>
+        <span class="badge">PostgreSQL</span><span class="badge">Git</span>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-contact">
+    <div class="p-eyebrow"><span class="dot"></span>📬 Contact</div>
+    <h2 class="p-title">Let's Connect</h2>
+    <p class="p-lead">Open to research collaboration, consulting, and data engineering in <strong style="color:var(--bio-green)">biotech</strong>, <strong style="color:var(--dna-blue)">bioinformatics</strong>, and <strong style="color:var(--ai-purple)">industrial AI</strong>.</p>
+    <div class="contact-row">
+      <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 6L12 13L2 6M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6l10 7l10-7z"/></svg>
+      <div><div class="k">Email</div><div class="v">mosallanejadamin1400@gmail.com</div></div>
+    </div>
+    <div class="contact-row">
+      <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div><div class="k">Location</div><div class="v">Kuala Lumpur, Malaysia</div></div>
+    </div>
+    <div class="contact-row" style="border-bottom:1px solid rgba(255,255,255,0.04)">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      <div><div class="k">GitHub</div><div class="v"><a href="https://github.com/AminMosallanejad339" target="_blank" style="color:var(--dna-blue);text-decoration:none">AminMosallanejad339</a></div></div>
+    </div>
+    <a class="btn" href="https://www.linkedin.com/in/amin-mosallanejad" target="_blank">
+      <span>Connect on LinkedIn</span>
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+    </a>
+  </template>
+
+  <script>
+  (function(){
+    const GH = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.07.78 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>';
+    const SVGNS='http://www.w3.org/2000/svg';
+    const ACCENT='#00D4FF';
+    const BLOG_COLOR='#FBBF24';
+
+    const TOPICS = [
+      { id:'about',        label:'About',        side:'left',  lane:0 },
+      { id:'education',    label:'Education',    side:'left',  lane:1 },
+      { id:'experience',   label:'Experience',   side:'left',  lane:2 },
+      { id:'projects',     label:'Projects',     side:'right', lane:0 },
+      { id:'publications', label:'Publications', side:'right', lane:1 },
+      { id:'skills',       label:'Skills',       side:'right', lane:2 },
+      { id:'contact',      label:'Contact',      side:'top', blog:false },
+    ];
+
+    const stage = document.getElementById('stage');
+    const svg = document.getElementById('branches');
+    const photo = document.getElementById('photo');
+    const root = document.getElementById('root');
+    const identity = document.getElementById('identity');
+    let leaves = [];
+
+    function sidePath(sx, sy, nx, ny, left){
+      const run = 30;
+      const kx = left ? nx + run : nx - run;
+      const h = Math.max(20, Math.abs(kx - sx) * 0.45);
+      const c1x = left ? sx - h : sx + h;
+      const c2x = left ? kx + h : kx - h;
+      return 'M'+sx+','+sy+' C'+c1x+','+sy+' '+c2x+','+ny+' '+kx+','+ny+' L'+nx+','+ny;
+    }
+
+    function build(){
+      const W = stage.clientWidth, H = stage.clientHeight;
+      svg.setAttribute('viewBox','0 0 '+W+' '+H);
+      svg.innerHTML=''; leaves.forEach(l=>l.remove()); leaves=[];
+
+      const cx = W/2;
+      const narrow = W < 640;
+      const short = H < 560;
+      const photoR = photo.getBoundingClientRect().width/2 || 70;
+      const cy = Math.max(photoR + (short?70:100), H*(short?0.42:0.42));
+      root.style.left='50%'; root.style.top=(cy-photoR)+'px'; root.style.transform='translateX(-50%)';
+
+      const sideOffset = Math.max(narrow?18:26, Math.min(175, (cx - photoR) - 130));
+      const nodeXL = cx - photoR - sideOffset;
+      const nodeXR = cx + photoR + sideOffset;
+      const laneGap = Math.min(photoR + 56, H*(short?0.13:0.17));
+      const lanes = [cy - laneGap, cy, cy + laneGap];
+      const topY = Math.max(40, cy - photoR - Math.min(H*0.18, 140));
+
+      identity.style.left='50%'; identity.style.transform='translateX(-50%)';
+      if(narrow || short){
+        const ih = identity.getBoundingClientRect().height || 120;
+        identity.style.top = Math.min(cy + laneGap + (short?24:38), H - ih - 10) + 'px';
+      } else {
+        identity.style.top = (cy + photoR + 12) + 'px';
+      }
+
+      const items = [];
+      TOPICS.forEach((tp,i)=>{
+        let sx, sy, nx, ny, d;
+        if(tp.side==='top'){
+          sx=cx; sy=cy-photoR+2; nx=cx; ny=topY;
+          d='M'+sx+','+sy+' L'+nx+','+ny;
+        } else {
+          const left = tp.side==='left';
+          sy=cy; sx = left ? cx-photoR+2 : cx+photoR-2;
+          nx = left ? nodeXL : nodeXR; ny = lanes[tp.lane];
+          d = sidePath(sx, sy, nx, ny, left);
+        }
+
+        const path=document.createElementNS(SVGNS,'path');
+        path.setAttribute('class','gitline'+(tp.blog?' blog':''));
+        path.setAttribute('d',d);
+        path.dataset.id=tp.id;
+        svg.appendChild(path);
+        const len=path.getTotalLength();
+        const delay=120+i*70;
+        path.style.strokeDasharray=len; path.style.strokeDashoffset=len;
+        requestAnimationFrame(()=>{
+          path.style.transition='stroke-dashoffset .65s cubic-bezier(.4,.1,.2,1) '+delay+'ms';
+          path.style.strokeDashoffset='0';
+        });
+
+        const g=document.createElementNS(SVGNS,'g');
+        g.setAttribute('class','node'+(tp.blog?' blog':''));
+        g.dataset.id=tp.id;
+        const halo=document.createElementNS(SVGNS,'circle');
+        halo.setAttribute('class','node-halo'); halo.setAttribute('cx',nx); halo.setAttribute('cy',ny); halo.setAttribute('r',12);
+        const core=document.createElementNS(SVGNS,'circle');
+        core.setAttribute('class','node-core'); core.setAttribute('cx',nx); core.setAttribute('cy',ny); core.setAttribute('r',5);
+        g.appendChild(halo); g.appendChild(core); svg.appendChild(g);
+        setTimeout(()=>g.classList.add('show'), delay+500);
+
+        const leaf=document.createElement('button');
+        leaf.className='leaf '+tp.side; leaf.dataset.id=tp.id;
+        leaf.style.setProperty('--leaf-color', tp.blog ? BLOG_COLOR : ACCENT);
+        let lx=nx, ly=ny;
+        if(tp.side==='left'){ lx=nx-10; }
+        else if(tp.side==='right'){ lx=nx+10; }
+        else { ly=ny-10; }
+        leaf.style.left=lx+'px'; leaf.style.top=ly+'px';
+        leaf.textContent=tp.label;
+        stage.appendChild(leaf); leaves.push(leaf);
+        setTimeout(()=>leaf.classList.add('show'), delay+500);
+
+        items.push({path,g,leaf,id:tp.id});
+
+        const enter=()=>{ items.forEach(o=>{ const on=o.id===tp.id; o.path.classList.toggle('hot',on); o.path.classList.toggle('dim',!on); o.g.classList.toggle('hot',on); o.g.classList.toggle('dim',!on); }); };
+        const leave=()=>{ items.forEach(o=>{ o.path.classList.remove('hot','dim'); o.g.classList.remove('hot','dim'); }); };
+        const openIt=()=>open(tp);
+        leaf.addEventListener('mouseenter',enter); leaf.addEventListener('mouseleave',leave);
+        g.addEventListener('mouseenter',enter); g.addEventListener('mouseleave',leave);
+        path.addEventListener('mouseenter',enter); path.addEventListener('mouseleave',leave);
+        leaf.addEventListener('click',openIt);
+        g.style.cursor='pointer'; g.addEventListener('click',openIt);
+        path.style.cursor='pointer'; path.addEventListener('click',openIt);
+      });
+    }
+
+    const overlay=document.getElementById('overlay');
+    const sheet=overlay.querySelector('.sheet');
+    const body=document.getElementById('sheetBody');
+    function open(tp){
+      const tpl=document.getElementById('tpl-'+tp.id);
+      if(!tpl) return;
+      body.innerHTML=tpl.innerHTML.replaceAll('__GH__',GH);
+      overlay.hidden=false; sheet.scrollTop=0;
+      overlay.querySelector('.sheet-close').focus();
+    }
+    function closeOverlay(){ overlay.hidden=true; }
+    overlay.addEventListener('click',e=>{ if(e.target.hasAttribute('data-close')) closeOverlay(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !overlay.hidden) closeOverlay(); });
+
+    // Theme toggle
+    const html=document.documentElement;
+    const saved=localStorage.getItem('theme');
+    if(saved) html.setAttribute('data-theme',saved);
+    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme','dark');
+    document.getElementById('themeToggle').addEventListener('click',()=>{
+      const next = html.getAttribute('data-theme')==='dark' ? 'light':'dark';
+      html.setAttribute('data-theme',next); localStorage.setItem('theme',next);
+    });
+
+    function sizePhoto(){
+      const d=Math.max(100, Math.min(200, Math.min(stage.clientWidth,stage.clientHeight)*0.22));
+      photo.style.width=d+'px'; photo.style.height=d+'px';
+    }
+    function init(){ sizePhoto(); build(); }
+    let rt;
+    window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(init,160); });
+    if(document.readyState==='loading') window.addEventListener('DOMContentLoaded',init);
+    else init();
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(init); }
+
+    // ---------- Particle Network ----------
+    (function(){
+      const c = document.getElementById('particles-canvas');
+      const ctx = c.getContext('2d');
+      let w,h;
+      let particles = [];
+      const N = 70;
+      const CONN = 140;
+
+      function resize(){
+        w = c.width = window.innerWidth;
+        h = c.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle{
+        constructor(){
+          this.x = Math.random() * w;
+          this.y = Math.random() * h;
+          this.vx = (Math.random() - 0.5) * 0.3;
+          this.vy = (Math.random() - 0.5) * 0.3;
+          this.r = 1 + Math.random() * 1.2;
+          this.colors = ['#00D4FF','#00FF94','#7C3AED','#FBBF24'];
+          this.color = this.colors[Math.floor(Math.random()*4)];
+        }
+        update(){
+          this.x += this.vx; this.y += this.vy;
+          if(this.x < 0 || this.x > w) this.vx *= -1;
+          if(this.y < 0 || this.y > h) this.vy *= -1;
+        }
+        draw(){
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.fillStyle = this.color;
+          ctx.shadowColor = this.color;
+          ctx.shadowBlur = 6;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      for(let i=0; i<N; i++) particles.push(new Particle());
+
+      function drawLines(){
+        for(let i=0; i<particles.length; i++){
+          for(let j=i+1; j<particles.length; j++){
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < CONN){
+              const op = 1 - (dist / CONN);
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0,212,255,${op * 0.2})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate(){
+        ctx.clearRect(0,0,w,h);
+        particles.forEach(p => { p.update(); p.draw(); });
+        drawLines();
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      let mx=-1000, my=-1000;
+      document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+      document.addEventListener('mouseleave', () => { mx=-1000; my=-1000; });
+      setInterval(() => {
+        particles.forEach(p => {
+          const dx = p.x - mx;
+          const dy = p.y - my;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if(dist < 100 && dist > 0){
+            const force = 0.4 / dist;
+            p.vx += dx * force * 0.02;
+            p.vy += dy * force * 0.02;
+          }
+        });
+      }, 50);
+    })();
+  })();
+  </script>
+</body>
+</html>
