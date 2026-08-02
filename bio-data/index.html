@@ -18,30 +18,38 @@
       --font-body:'Inter',sans-serif;
       --font-mono:'JetBrains Mono',monospace;
 
-      /* Bio-Data Colors matching your Logo */
       --theme-blue:#00D4FF;
       --theme-green:#00FF94;
       --theme-purple:#7C3AED;
       --theme-gold:#FBBF24;
-      --bg-deep:#05080F; /* Deeper background */
-      --bg-card:rgba(17,24,39,0.85);
-      --bg-card-hover:#1F2937;
       --text-primary:#F3F4F6;
       --text-secondary:#9CA3AF;
-      --border-glow:rgba(0,212,255,0.12);
-      --shadow-glow:0 0 60px rgba(0,212,255,0.04);
     }
 
     body{
       font-family:var(--font-body);
-      background:var(--bg-deep);
+      background: var(--bg-deep);
       color:var(--text-primary);
       min-height:100vh;
       overflow:hidden;
-      background-image:
-        radial-gradient(ellipse at 15% 50%, rgba(0,212,255,0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at 85% 20%, rgba(124,58,237,0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 85%, rgba(0,255,148,0.03) 0%, transparent 50%);
+      
+      /* ----- BACKGROUND IMAGE SETUP ----- */
+      --bg-deep: #05080F;
+      background-color: var(--bg-deep);
+      background-image: url('poster.jpg'); /* نام فایل عکس شما */
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    /* Overlay تیره برای خوانایی بهتر متن‌ها */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(5,8,15,0.3) 0%, rgba(5,8,15,0.85) 100%);
+      z-index: 0;
+      pointer-events: none;
     }
 
     /* ---------- Particle Canvas ---------- */
@@ -49,15 +57,16 @@
       position:fixed;
       top:0;left:0;
       width:100%;height:100%;
-      z-index:0;
+      z-index:1; /* روی پس‌زمینه اما زیر متن‌ها */
       pointer-events:none;
+      opacity: 0.4; /* کمی کمرنگ‌تر برای دیده شدن پوستر */
     }
 
     /* ---------- Stage ---------- */
     .stage{
       position:fixed;
       inset:0;
-      z-index:1;
+      z-index:2;
       overflow:hidden;
     }
     .branches{
@@ -66,12 +75,13 @@
       width:100%;
       height:100%;
       display:block;
+      opacity: 0.5; /* شاخه‌ها کمی کمرنگ‌تر */
     }
 
     /* Git lines */
     .gitline{
       fill:none;
-      stroke:rgba(255,255,255,0.08);
+      stroke:rgba(255,255,255,0.15);
       stroke-width:2.5;
       stroke-linecap:round;
       stroke-linejoin:round;
@@ -108,7 +118,7 @@
     .node.blog .node-halo{fill:var(--theme-gold)}
     .node.hot .node-halo{opacity:.25}
 
-    /* ---------- Root (Profile) ---------- */
+    /* ---------- Root (Profile) & Identity ---------- */
     .root{
       position:absolute;
       display:flex;
@@ -116,20 +126,29 @@
       align-items:center;
       z-index:6;
       opacity:0;
-      animation:pop .8s cubic-bezier(.22,.9,.28,1.2) .05s forwards;
+      /* تغییر مکان لوگو به سمت چپ برای هماهنگی با پوستر */
+      left: 8% !important; 
+      top: 15% !important;
+      transform: none !important;
+      animation:popIn .8s cubic-bezier(.22,.9,.28,1.2) .05s forwards;
     }
+    
     .identity{
       position:absolute;
       z-index:6;
       display:flex;
       flex-direction:column;
-      align-items:center;
+      align-items:flex-start; /* چینش متن‌ها از سمت چپ */
+      left: 8% !important;
+      top: 38% !important;
+      transform: none !important;
       opacity:0;
-      animation:pop .8s cubic-bezier(.22,.9,.28,1.2) .2s forwards;
+      animation:popIn .8s cubic-bezier(.22,.9,.28,1.2) .2s forwards;
     }
-    @keyframes pop{
-      from{opacity:0;transform:translateX(-50%) scale(.9)}
-      to{opacity:1;transform:translateX(-50%)}
+    
+    @keyframes popIn{
+      from{opacity:0;transform:translateY(15px)}
+      to{opacity:1;transform:translateY(0)}
     }
 
     .photo{
@@ -141,11 +160,13 @@
       user-select:none;
       -webkit-user-drag:none;
       padding:5px;
+      width:120px; /* کمی کوچک‌تر در این حالت */
+      height:120px;
     }
     .photo-wrap{
       position:relative;
       border-radius:20px;
-      margin-bottom:8px; /* Added spacing below logo */
+      margin-bottom:8px;
     }
     .photo-wrap .ring{
       position:absolute;
@@ -158,26 +179,23 @@
       mask-composite:exclude;
       animation:spin-ring 10s linear infinite;
     }
-    @keyframes spin-ring{
-      to{transform:rotate(360deg)}
-    }
+    @keyframes spin-ring{ to{transform:rotate(360deg)} }
     .photo-wrap .glow{
       position:absolute;
       inset:-24px;
       border-radius:20px;
-      background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%); /* Enhanced Glow */
+      background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%);
       filter:blur(24px);
       pointer-events:none;
     }
 
     .name{
       font-family:var(--font-display);
-      margin:12px 0 6px; /* Adjusted spacing */
+      margin:0 0 4px;
       font-weight:700;
       letter-spacing:-0.5px;
       white-space:nowrap;
-      font-size:clamp(26px,3.2vw,34px);
-      text-align:center;
+      font-size:clamp(28px,3.5vw,40px); /* نام کمی بزرگ‌تر */
       line-height:1.15;
       background:linear-gradient(135deg,#fff 30%,var(--theme-blue));
       -webkit-background-clip:text;
@@ -186,23 +204,24 @@
     }
     .tagline{
       font-family:var(--font-body);
-      margin:4px 0 0;
-      color:var(--text-secondary);
-      font-size:clamp(12px,1.3vw,15px);
-      text-align:center;
+      margin:2px 0;
+      color:var(--text-primary);
+      font-size:clamp(13px,1.3vw,16px);
       white-space:nowrap;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8); /* سایه برای خوانایی بهتر روی عکس */
     }
     .tagline-2{
-      margin-top:4px; /* Increased spacing */
+      margin:2px 0 8px;
       color:var(--theme-green);
       font-weight:500;
-      font-size:clamp(11px,1.1vw,14px);
+      font-size:clamp(12px,1.1vw,14px);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
+    
     .socials-row{
       display:flex;
       gap:10px;
-      margin-top:18px; /* Increased spacing */
-      justify-content:center;
+      margin-top:12px;
     }
     .socials-row a{
       width:38px;height:38px;
@@ -210,17 +229,17 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--text-secondary);
+      background:rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      border:1px solid rgba(255,255,255,0.2);
+      color:var(--text-primary);
       transition:all .3s ease;
     }
     .socials-row a:hover{
       transform:translateY(-3px);
       border-color:var(--theme-blue);
       color:var(--theme-blue);
-      background:rgba(0,212,255,0.06);
-      box-shadow:0 8px 30px rgba(0,212,255,0.08);
+      background:rgba(0,212,255,0.2);
     }
     .socials-row svg{
       width:17px;height:17px;
@@ -230,7 +249,7 @@
       stroke-width:2;
     }
 
-    /* ---------- Leaf Labels ---------- */
+    /* ---------- Leaf Labels (منوها سمت راست و پایین) ---------- */
     .leaf{
       position:absolute;
       display:inline-flex;
@@ -238,17 +257,16 @@
       gap:8px;
       font-family:var(--font-mono);
       font-size:clamp(11px,1.2vw,14px);
-      letter-spacing:-0.1px;
       color:var(--text-primary);
-      background:rgba(17,24,39,0.75);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      border:1px solid rgba(255,255,255,0.06);
-      padding:5px 14px;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.15);
+      padding:6px 16px;
       border-radius:10px;
       cursor:pointer;
       white-space:nowrap;
-      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      box-shadow:0 4px 20px rgba(0,0,0,0.5);
       z-index:7;
       opacity:0;
       transition:opacity .5s ease,background .3s,border-color .3s,transform .3s;
@@ -259,13 +277,12 @@
     .leaf.right{transform:translate(0,-50%)}
     .leaf.top{transform:translate(-50%,-100%)}
     .leaf:hover,.leaf:focus-visible{
-      background:rgba(0,212,255,0.08);
-      border-color:var(--leaf-color);
-      transform:translate(-100%,-50%) scale(1.04);
-      outline:none;
+      background:rgba(0,212,255,0.15);
+      border-color:var(--theme-blue);
+      transform:translate(-100%,-50%) scale(1.05);
     }
-    .leaf.right:hover{transform:translate(0,-50%) scale(1.04)}
-    .leaf.top:hover{transform:translate(-50%,-100%) scale(1.04)}
+    .leaf.right:hover{transform:translate(0,-50%) scale(1.05)}
+    .leaf.top:hover{transform:translate(-50%,-100%) scale(1.05)}
     .leaf .dot{
       width:8px;height:8px;
       border-radius:50%;
@@ -274,7 +291,7 @@
       box-shadow:0 0 16px var(--leaf-color);
     }
 
-    /* ---------- Overlay ---------- */
+    /* ---------- Overlay (پنجره‌های بازشونده) ---------- */
     .overlay{
       position:fixed;
       inset:0;
@@ -288,7 +305,7 @@
     .scrim{
       position:absolute;
       inset:0;
-      background:rgba(5,8,15,0.85); /* Darker scrim */
+      background:rgba(5,8,15,0.7);
       backdrop-filter:blur(12px);
       -webkit-backdrop-filter:blur(12px);
       animation:fade .3s ease;
@@ -298,12 +315,11 @@
       width:min(700px,100%);
       max-height:88vh;
       overflow:auto;
-      background:rgba(17,24,39,0.92);
+      background:rgba(17,24,39,0.95);
       backdrop-filter:blur(20px);
-      -webkit-backdrop-filter:blur(20px);
       border:1px solid rgba(255,255,255,0.06);
       border-radius:24px;
-      box-shadow:0 24px 80px rgba(0,0,0,0.6);
+      box-shadow:0 24px 80px rgba(0,0,0,0.8);
       padding:36px 34px 40px;
       animation:rise .35s cubic-bezier(.2,.85,.3,1);
     }
@@ -338,7 +354,7 @@
     @keyframes fade{from{opacity:0}to{opacity:1}}
     @keyframes rise{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
 
-    /* ---------- Panel Content ---------- */
+    /* ---------- Panel Content (محتویات داخلی) ---------- */
     .p-eyebrow{
       display:flex;
       align-items:center;
@@ -369,11 +385,7 @@
       font-size:13px;
       line-height:1.7;
     }
-    .timeline{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
+    .timeline{ display:flex; flex-direction:column; gap:16px; }
     .t-item{
       padding-left:16px;
       border-left:2px solid rgba(255,255,255,0.06);
@@ -388,225 +400,78 @@
       background:var(--theme-blue);
       box-shadow:0 0 20px rgba(0,212,255,0.2);
     }
-    .t-item h4{
-      margin:0;
-      font-size:13.5px;
-      font-weight:600;
-    }
-    .t-item .org{
-      margin:2px 0 0;
-      font-size:12.5px;
-      color:var(--text-secondary);
-    }
+    .t-item h4{ margin:0; font-size:13.5px; font-weight:600; }
+    .t-item .org{ margin:2px 0 0; font-size:12.5px; color:var(--text-secondary); }
     .t-item .org .hl{color:var(--theme-green)}
-    .t-item .date{
-      margin:4px 0 0;
-      font-family:var(--font-mono);
-      font-size:11.5px;
-      color:var(--text-secondary);
-      letter-spacing:0;
-    }
-    .t-item ul{
-      font-size:12px;
-      color:var(--text-secondary);
-      padding-left:18px;
-      margin:4px 0 0;
-      line-height:1.6;
-    }
-    .pills{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-top:6px;
-    }
+    .t-item .date{ margin:4px 0 0; font-family:var(--font-mono); font-size:11.5px; color:var(--text-secondary); }
+    .t-item ul{ font-size:12px; color:var(--text-secondary); padding-left:18px; margin:4px 0 0; line-height:1.6; }
+    .pills{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
     .pill{
-      font-size:10.5px;
-      color:var(--text-secondary);
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.06);
-      padding:4px 12px;
-      border-radius:999px;
-      font-family:var(--font-mono);
+      font-size:10.5px; color:var(--text-secondary);
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06);
+      padding:4px 12px; border-radius:999px; font-family:var(--font-mono);
     }
-    .pill.accent{
-      color:var(--theme-blue);
-      border-color:rgba(0,212,255,0.15);
-      background:rgba(0,212,255,0.06);
-    }
-    .pill.green{
-      color:var(--theme-green);
-      border-color:rgba(0,255,148,0.15);
-      background:rgba(0,255,148,0.06);
-    }
-    .pill.purple{
-      color:var(--theme-purple);
-      border-color:rgba(124,58,237,0.15);
-      background:rgba(124,58,237,0.06);
-    }
-    .pill.gold{
-      color:var(--theme-gold);
-      border-color:rgba(251,191,36,0.15);
-      background:rgba(251,191,36,0.06);
-    }
-    .proj{
-      padding:14px 0;
-      border-top:1px solid rgba(255,255,255,0.04);
-    }
+    .pill.accent{ color:var(--theme-blue); border-color:rgba(0,212,255,0.15); background:rgba(0,212,255,0.06); }
+    .pill.green{ color:var(--theme-green); border-color:rgba(0,255,148,0.15); background:rgba(0,255,148,0.06); }
+    .pill.purple{ color:var(--theme-purple); border-color:rgba(124,58,237,0.15); background:rgba(124,58,237,0.06); }
+    .pill.gold{ color:var(--theme-gold); border-color:rgba(251,191,36,0.15); background:rgba(251,191,36,0.06); }
+    
+    .proj{ padding:14px 0; border-top:1px solid rgba(255,255,255,0.04); }
     .proj:first-of-type{border-top:none;padding-top:0}
-    .proj-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .proj-head h4{
-      margin:0;font-size:14px;font-weight:600;
-    }
-    .proj p{
-      margin:4px 0 8px;
-      font-size:12.5px;
-      line-height:1.5;
-      color:var(--text-secondary);
-    }
-    .proj a.gh{
-      color:var(--text-secondary);
-      display:inline-flex;
-      transition:color .3s;
-      flex:none;
-    }
+    .proj-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .proj-head h4{ margin:0;font-size:14px;font-weight:600; }
+    .proj p{ margin:4px 0 8px; font-size:12.5px; line-height:1.5; color:var(--text-secondary); }
+    .proj a.gh{ color:var(--text-secondary); display:inline-flex; transition:color .3s; flex:none; }
     .proj a.gh:hover{color:var(--theme-blue)}
     .proj a.gh svg{width:17px;height:17px;fill:currentColor}
-    .pub-year{
-      font-family:var(--font-mono);
-      font-size:15px;
-      font-weight:500;
-      color:var(--theme-gold);
-      margin:18px 0 10px;
-    }
+    
+    .pub-year{ font-family:var(--font-mono); font-size:15px; font-weight:500; color:var(--theme-gold); margin:18px 0 10px; }
     .pub-year:first-child{margin-top:0}
-    .pub{margin:0 0 12px}
+    .pub{ margin:0 0 12px; }
     .pub .pt{margin:0;font-size:13px;font-weight:600;line-height:1.4}
     .pub .pa{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary)}
     .pub .pj{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary);font-style:italic}
     .pub .pl{margin:2px 0 0;font-size:11px;color:var(--theme-blue)}
     .pub .pl a{color:var(--theme-blue);text-decoration:none}
     .pub .pl a:hover{text-decoration:underline}
-    .contact-row{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding:12px 0;
-      border-top:1px solid rgba(255,255,255,0.04);
-    }
+    
+    .contact-row{ display:flex; align-items:center; gap:14px; padding:12px 0; border-top:1px solid rgba(255,255,255,0.04); }
     .contact-row:first-of-type{border-top:none}
-    .contact-row .k{
-      font-family:var(--font-mono);
-      font-size:11px;
-      color:var(--text-secondary);
-      letter-spacing:.5px;
-      text-transform:uppercase;
-    }
+    .contact-row .k{ font-family:var(--font-mono); font-size:11px; color:var(--text-secondary); letter-spacing:.5px; text-transform:uppercase; }
     .contact-row .v{font-size:13px;margin-top:2px}
+    
     .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      margin-top:20px;
-      background:linear-gradient(135deg,var(--theme-blue),var(--theme-purple));
-      color:#fff;
-      border:none;
-      border-radius:12px;
-      padding:10px 20px;
-      font-family:var(--font-body);
-      font-size:13px;
-      font-weight:600;
-      text-decoration:none;
-      cursor:pointer;
-      transition:all .3s ease;
+      display:inline-flex; align-items:center; gap:8px; margin-top:20px;
+      background:linear-gradient(135deg,var(--theme-blue),var(--theme-purple)); color:#fff;
+      border:none; border-radius:12px; padding:10px 20px; font-family:var(--font-body);
+      font-size:13px; font-weight:600; text-decoration:none; cursor:pointer; transition:all .3s ease;
     }
-    .btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 8px 30px rgba(0,212,255,0.2);
-    }
+    .btn:hover{ transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,212,255,0.2); }
     .btn svg{width:15px;height:15px;fill:currentColor}
-    .morelink{
-      display:inline-block;
-      margin-top:14px;
-      color:var(--theme-blue);
-      font-size:12.5px;
-      font-weight:500;
-      text-decoration:none;
-    }
+    .morelink{ display:inline-block; margin-top:14px; color:var(--theme-blue); font-size:12.5px; font-weight:500; text-decoration:none; }
     .morelink:hover{text-decoration:underline}
-    .badge-grid{
-      display:flex;
-      flex-wrap:wrap;
-      gap:5px;
-      margin:4px 0 0;
-    }
+    
+    .badge-grid{ display:flex; flex-wrap:wrap; gap:5px; margin:4px 0 0; }
     .badge-grid .badge{
-      font-size:10px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.06);
-      padding:3px 10px;
-      border-radius:999px;
-      color:var(--text-secondary);
-      font-family:var(--font-mono);
+      font-size:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06);
+      padding:3px 10px; border-radius:999px; color:var(--text-secondary); font-family:var(--font-mono);
     }
-    .badge-grid .badge.accent{
-      color:var(--theme-blue);
-      border-color:rgba(0,212,255,0.12);
-      background:rgba(0,212,255,0.05);
-    }
-    .badge-grid .badge.green{
-      color:var(--theme-green);
-      border-color:rgba(0,255,148,0.12);
-      background:rgba(0,255,148,0.05);
-    }
-    .badge-grid .badge.purple{
-      color:var(--theme-purple);
-      border-color:rgba(124,58,237,0.12);
-      background:rgba(124,58,237,0.05);
-    }
-    .badge-grid .badge.gold{
-      color:var(--theme-gold);
-      border-color:rgba(251,191,36,0.12);
-      background:rgba(251,191,36,0.05);
-    }
+    .badge-grid .badge.accent{ color:var(--theme-blue); border-color:rgba(0,212,255,0.12); background:rgba(0,212,255,0.05); }
+    .badge-grid .badge.green{ color:var(--theme-green); border-color:rgba(0,255,148,0.12); background:rgba(0,255,148,0.05); }
+    .badge-grid .badge.purple{ color:var(--theme-purple); border-color:rgba(124,58,237,0.12); background:rgba(124,58,237,0.05); }
+    .badge-grid .badge.gold{ color:var(--theme-gold); border-color:rgba(251,191,36,0.12); background:rgba(251,191,36,0.05); }
 
-    /* ---------- Hint ---------- */
-    .hint{
-      position:fixed;
-      left:0;right:0;
-      bottom:16px;
-      text-align:center;
-      font-family:var(--font-mono);
-      color:var(--text-secondary);
-      font-size:12px;
-      z-index:6;
-      opacity:0;
-      animation:fadein 1.2s ease 1.4s forwards;
-      pointer-events:none;
-      letter-spacing:0.3px;
-    }
-    @keyframes fadein{to{opacity:0.5}}
-
-    /* ---------- Responsive ---------- */
-    @media(max-width:640px){
-      .leaf{font-size:10px;padding:4px 10px}
-      .tagline{font-size:11px}
-      .socials-row a{width:32px;height:32px}
-      .socials-row svg{width:15px;height:15px}
-      .sheet{padding:28px 20px 32px}
-      .p-title{font-size:24px}
-      .name{font-size:22px}
-    }
-    @media(max-height:560px){
-      .socials-row a{width:30px;height:30px;border-radius:8px}
-      .socials-row{gap:8px;margin-top:10px}
-      .name{margin-top:10px;font-size:20px}
-      .hint{display:none}
-      .tagline-2{font-size:10px}
+    /* ---------- Mobile Responsive ---------- */
+    @media(max-width:768px){
+      .root{ left: 50% !important; top: 10% !important; transform: translateX(-50%) !important; }
+      .identity{ left: 50% !important; top: 35% !important; transform: translateX(-50%) !important; align-items: center !important; text-align: center; }
+      .photo{ width:100px; height:100px; }
+      .leaf{ font-size:10px; padding:4px 12px; }
+      .socials-row a{ width:32px;height:32px; }
+      .socials-row svg{ width:15px;height:15px; }
+      .sheet{ padding:28px 20px 32px; }
+      .p-title{ font-size:24px; }
+      .name{ font-size:24px; }
     }
   </style>
 </head>
@@ -614,11 +479,6 @@
 
   <!-- Particle Canvas -->
   <canvas id="particles-canvas"></canvas>
-
-  <!-- Theme Toggle -->
-  <button style="position:fixed;top:18px;right:18px;z-index:20;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(17,24,39,0.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);color:var(--text-secondary);transition:all .3s ease" id="themeToggle" aria-label="Toggle theme">
-    <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
-  </button>
 
   <!-- Stage -->
   <main class="stage" id="stage">
@@ -653,8 +513,6 @@
     </div>
   </main>
 
-  <p class="hint">✦ Click a branch to explore ✦</p>
-
   <!-- Overlay -->
   <div class="overlay" id="overlay" hidden>
     <div class="scrim" data-close></div>
@@ -668,9 +526,7 @@
   <template id="tpl-about">
     <div class="p-eyebrow"><span class="dot"></span>About</div>
     <h2 class="p-title">Amin Mosallanejad</h2>
-    <p class="p-lead">
-      A Chemical Engineer turned Bio-Data Scientist with over 17 years of industrial expertise, specializing in bridging the gap between biotechnology, data science, and bioinformatics. Passionate about leveraging machine learning and advanced data engineering to optimize industrial bioprocesses, revolutionize wastewater treatment, and enhance environmental systems.
-    </p>
+    <p class="p-lead">A Chemical Engineer turned Bio-Data Scientist with over 17 years of industrial expertise, specializing in bridging the gap between biotechnology, data science, and bioinformatics. Passionate about leveraging machine learning and advanced data engineering to optimize industrial bioprocesses, revolutionize wastewater treatment, and enhance environmental systems.</p>
     <div class="pills">
       <span class="pill accent">Bioprocess Optimization</span>
       <span class="pill green">Wastewater AI</span>
@@ -684,26 +540,9 @@
     <div class="p-eyebrow"><span class="dot"></span>Education</div>
     <h2 class="p-title">Education</h2>
     <div class="timeline">
-      <div class="t-item">
-        <h4>M.Sc. Data Science &amp; Business Analytics</h4>
-        <div class="org"><span class="hl">Asia Pacific University (APU)</span> · Malaysia</div>
-        <div class="date">2024–2025 · GPA 3.7/4 · Data Engineering</div>
-        <ul>
-          <li>Thesis: <strong style="color:var(--theme-green)">ML for Wastewater Process Performance</strong></li>
-          <li>Dual Degree with <strong style="color:var(--theme-gold)">De Montfort University (DMU)</strong>, UK</li>
-        </ul>
-      </div>
-      <div class="t-item">
-        <h4>M.Sc. Chemical Engineering — Biotechnology</h4>
-        <div class="org"><span class="hl">Islamic Azad University</span> · Quchan, Iran</div>
-        <div class="date">2013–2016 · GPA 18.14/20</div>
-        <ul><li>Thesis: Hydrocarbon Sludge Biodegradation · <strong style="color:var(--theme-blue)">SuperPro</strong> simulation</li></ul>
-      </div>
-      <div class="t-item" style="border-bottom:none;padding-bottom:0">
-        <h4>B.Sc. Chemical Engineering — Refining</h4>
-        <div class="org"><span class="hl">Islamic Azad University</span> · Gachsaran, Iran</div>
-        <div class="date">1998–2003 · GPA 14.75/20</div>
-      </div>
+      <div class="t-item"><h4>M.Sc. Data Science &amp; Business Analytics</h4><div class="org"><span class="hl">Asia Pacific University (APU)</span> · Malaysia</div><div class="date">2024–2025 · GPA 3.7/4 · Data Engineering</div><ul><li>Thesis: <strong style="color:var(--theme-green)">ML for Wastewater Process Performance</strong></li><li>Dual Degree with <strong style="color:var(--theme-gold)">De Montfort University (DMU)</strong>, UK</li></ul></div>
+      <div class="t-item"><h4>M.Sc. Chemical Engineering — Biotechnology</h4><div class="org"><span class="hl">Islamic Azad University</span> · Quchan, Iran</div><div class="date">2013–2016 · GPA 18.14/20</div><ul><li>Thesis: Hydrocarbon Sludge Biodegradation · <strong style="color:var(--theme-blue)">SuperPro</strong> simulation</li></ul></div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0"><h4>B.Sc. Chemical Engineering — Refining</h4><div class="org"><span class="hl">Islamic Azad University</span> · Gachsaran, Iran</div><div class="date">1998–2003 · GPA 14.75/20</div></div>
     </div>
   </template>
 
@@ -711,61 +550,18 @@
     <div class="p-eyebrow"><span class="dot"></span>Experience</div>
     <h2 class="p-title">Industry Experience</h2>
     <div class="timeline">
-      <div class="t-item">
-        <h4>Senior Utility Engineer</h4>
-        <div class="org"><span class="hl">South Pars Gas Complex</span> · Phase 19</div>
-        <div class="date">2017–2024</div>
-        <ul>
-          <li>Optimized 185 TPH water-tube boilers · Low NOx Burner</li>
-          <li>MED-TVC desalination · Ion exchange (MIX Bed) · Potable water</li>
-          <li>Wastewater treatment (Activated Sludge · BioTower · SBR) · Root cause analysis</li>
-          <li>Nitrogen generation (Cryogenic · GAN &amp; LIN)</li>
-          <li>Chemical passivation &amp; loop chemistry optimization</li>
-        </ul>
-      </div>
-      <div class="t-item">
-        <h4>Utility Plant Supervisor / Senior Control Room</h4>
-        <div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div>
-        <div class="date">2007–2017</div>
-        <ul>
-          <li>Supervised boilers, nitrogen, chillers, water/wastewater systems</li>
-          <li>DCS (Yokogawa) · Emergency response coordination</li>
-          <li>Equipment replacement policies · Shift coordination</li>
-          <li>Commissioning team member · Permit to Work (PTW) system</li>
-          <li>HSE compliance &amp; safety training coordination</li>
-        </ul>
-      </div>
-      <div class="t-item" style="border-bottom:none;padding-bottom:0">
-        <h4>Senior Operator - Utility Area</h4>
-        <div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div>
-        <div class="date">2003–2007</div>
-        <ul>
-          <li>Operation of oil/gas-fired boilers · Molecular sieve air dryers</li>
-          <li>Diesel generators · Chillers &amp; refrigeration packages</li>
-          <li>Water treatment · Desalination · Ion exchange · Drinking water</li>
-        </ul>
-      </div>
+      <div class="t-item"><h4>Senior Utility Engineer</h4><div class="org"><span class="hl">South Pars Gas Complex</span> · Phase 19</div><div class="date">2017–2024</div><ul><li>Optimized 185 TPH water-tube boilers · Low NOx Burner</li><li>MED-TVC desalination · Ion exchange (MIX Bed) · Potable water</li><li>Wastewater treatment (Activated Sludge · BioTower · SBR) · Root cause analysis</li><li>Nitrogen generation (Cryogenic · GAN &amp; LIN)</li><li>Chemical passivation &amp; loop chemistry optimization</li></ul></div>
+      <div class="t-item"><h4>Utility Plant Supervisor / Senior Control Room</h4><div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div><div class="date">2007–2017</div><ul><li>Supervised boilers, nitrogen, chillers, water/wastewater systems</li><li>DCS (Yokogawa) · Emergency response coordination</li><li>Equipment replacement policies · Shift coordination</li><li>Commissioning team member · Permit to Work (PTW) system</li><li>HSE compliance &amp; safety training coordination</li></ul></div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0"><h4>Senior Operator - Utility Area</h4><div class="org"><span class="hl">South Pars Gas Complex</span> · Phases 6, 7 &amp; 8</div><div class="date">2003–2007</div><ul><li>Operation of oil/gas-fired boilers · Molecular sieve air dryers</li><li>Diesel generators · Chillers &amp; refrigeration packages</li><li>Water treatment · Desalination · Ion exchange · Drinking water</li></ul></div>
     </div>
   </template>
 
   <template id="tpl-projects">
     <div class="p-eyebrow"><span class="dot"></span>Projects</div>
     <h2 class="p-title">Bio-Data Projects</h2>
-    <div class="proj">
-      <div class="proj-head"><h4>MachineLearning-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/MachineLearning-Theo" target="_blank">__GH__</a></div>
-      <p>ML models for wastewater process optimization and energy reduction.</p>
-      <div class="pills"><span class="pill accent">Python</span><span class="pill">scikit-learn</span><span class="pill">XGBoost</span></div>
-    </div>
-    <div class="proj">
-      <div class="proj-head"><h4>Airflow-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/Airflow_Theo" target="_blank">__GH__</a></div>
-      <p>Automated ETL pipelines for environmental sensor data using Apache Airflow.</p>
-      <div class="pills"><span class="pill accent">Airflow</span><span class="pill">Docker</span><span class="pill">Python</span><span class="pill">PostgreSQL</span></div>
-    </div>
-    <div class="proj" style="border-bottom:none;padding-bottom:0">
-      <div class="proj-head"><h4>LabForLinux-Pro</h4><a class="gh" href="https://github.com/AminMosallanejad339/LabForLinux_Pro" target="_blank">__GH__</a></div>
-      <p>Interactive dashboard for real-time water quality monitoring with Streamlit.</p>
-      <div class="pills"><span class="pill green">Streamlit</span><span class="pill">Plotly</span><span class="pill">Analytics</span></div>
-    </div>
+    <div class="proj"><div class="proj-head"><h4>MachineLearning-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/MachineLearning-Theo" target="_blank">__GH__</a></div><p>ML models for wastewater process optimization and energy reduction.</p><div class="pills"><span class="pill accent">Python</span><span class="pill">scikit-learn</span><span class="pill">XGBoost</span></div></div>
+    <div class="proj"><div class="proj-head"><h4>Airflow-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/Airflow_Theo" target="_blank">__GH__</a></div><p>Automated ETL pipelines for environmental sensor data using Apache Airflow.</p><div class="pills"><span class="pill accent">Airflow</span><span class="pill">Docker</span><span class="pill">Python</span><span class="pill">PostgreSQL</span></div></div>
+    <div class="proj" style="border-bottom:none;padding-bottom:0"><div class="proj-head"><h4>LabForLinux-Pro</h4><a class="gh" href="https://github.com/AminMosallanejad339/LabForLinux_Pro" target="_blank">__GH__</a></div><p>Interactive dashboard for real-time water quality monitoring with Streamlit.</p><div class="pills"><span class="pill green">Streamlit</span><span class="pill">Plotly</span><span class="pill">Analytics</span></div></div>
     <a class="morelink" href="https://github.com/AminMosallanejad339" target="_blank">View all →</a>
   </template>
 
@@ -773,91 +569,27 @@
     <div class="p-eyebrow"><span class="dot"></span>Publications</div>
     <h2 class="p-title">Research</h2>
     <p class="p-lead">Peer-reviewed work in biotechnology and environmental engineering.</p>
-    <div class="pub">
-      <div class="pt">Biodegradation of Gasoline &amp; Toluene in South Pars Gas Complex Using SuperPro Simulation</div>
-      <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Fasihi, M.</div>
-      <div class="pj">3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia (2016)</div>
-      <div class="pl">🔗 <a href="https://civilica.com/doc/557571" target="_blank">civilica.com/doc/557571</a></div>
-    </div>
-    <div class="pub" style="border-bottom:none;padding-bottom:0">
-      <div class="pt">Industrial Wastewater Treatment Performance — Activated Sludge &amp; Trickling Filter</div>
-      <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Shiri, S.S.</div>
-      <div class="pj">3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey (2016)</div>
-      <div class="pl">🔗 <a href="https://civilica.com/doc/491464" target="_blank">civilica.com/doc/491464</a></div>
-    </div>
+    <div class="pub"><div class="pt">Biodegradation of Gasoline &amp; Toluene in South Pars Gas Complex Using SuperPro Simulation</div><div class="pa">Mosallanejad, A.; Khosraviyar, S.; Fasihi, M.</div><div class="pj">3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia (2016)</div><div class="pl">🔗 <a href="https://civilica.com/doc/557571" target="_blank">civilica.com/doc/557571</a></div></div>
+    <div class="pub" style="border-bottom:none;padding-bottom:0"><div class="pt">Industrial Wastewater Treatment Performance — Activated Sludge &amp; Trickling Filter</div><div class="pa">Mosallanejad, A.; Khosraviyar, S.; Shiri, S.S.</div><div class="pj">3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey (2016)</div><div class="pl">🔗 <a href="https://civilica.com/doc/491464" target="_blank">civilica.com/doc/491464</a></div></div>
   </template>
 
   <template id="tpl-skills">
     <div class="p-eyebrow"><span class="dot"></span>Skills</div>
     <h2 class="p-title">Bio-Data Stack</h2>
-    <div style="margin:6px 0 12px">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Bioinformatics &amp; Biotech</div>
-      <div class="badge-grid">
-        <span class="badge green">SuperPro</span>
-        <span class="badge">STOAT</span>
-        <span class="badge">ASPEN ONE</span>
-        <span class="badge">ASPEN HYSYS</span>
-        <span class="badge green">AQUA Designer</span>
-      </div>
-    </div>
-    <div style="margin:10px 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Data Science &amp; AI</div>
-      <div class="badge-grid">
-        <span class="badge accent">Python</span>
-        <span class="badge">R</span>
-        <span class="badge accent">scikit-learn</span>
-        <span class="badge">PyTorch</span>
-        <span class="badge">TensorFlow</span>
-        <span class="badge">Azure ML</span>
-      </div>
-    </div>
-    <div style="margin:10px 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Data Engineering</div>
-      <div class="badge-grid">
-        <span class="badge accent">Spark</span>
-        <span class="badge">Docker</span>
-        <span class="badge">Airflow</span>
-        <span class="badge">Kafka</span>
-        <span class="badge">PostgreSQL</span>
-        <span class="badge">Hadoop</span>
-        <span class="badge">Git</span>
-      </div>
-    </div>
-    <div style="margin:10px 0 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Analytics &amp; Visualization</div>
-      <div class="badge-grid">
-        <span class="badge purple">Tableau</span>
-        <span class="badge purple">SAS</span>
-        <span class="badge">SPSS</span>
-        <span class="badge">Excel</span>
-      </div>
-    </div>
+    <div style="margin:6px 0 12px"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Bioinformatics &amp; Biotech</div><div class="badge-grid"><span class="badge green">SuperPro</span><span class="badge">STOAT</span><span class="badge">ASPEN ONE</span><span class="badge">ASPEN HYSYS</span><span class="badge green">AQUA Designer</span></div></div>
+    <div style="margin:10px 0"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Data Science &amp; AI</div><div class="badge-grid"><span class="badge accent">Python</span><span class="badge">R</span><span class="badge accent">scikit-learn</span><span class="badge">PyTorch</span><span class="badge">TensorFlow</span><span class="badge">Azure ML</span></div></div>
+    <div style="margin:10px 0"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Data Engineering</div><div class="badge-grid"><span class="badge accent">Spark</span><span class="badge">Docker</span><span class="badge">Airflow</span><span class="badge">Kafka</span><span class="badge">PostgreSQL</span><span class="badge">Hadoop</span><span class="badge">Git</span></div></div>
+    <div style="margin:10px 0 0"><div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Analytics &amp; Visualization</div><div class="badge-grid"><span class="badge purple">Tableau</span><span class="badge purple">SAS</span><span class="badge">SPSS</span><span class="badge">Excel</span></div></div>
   </template>
 
   <template id="tpl-certifications">
     <div class="p-eyebrow"><span class="dot"></span>Certifications</div>
     <h2 class="p-title">Professional Certifications</h2>
     <div class="timeline">
-      <div class="t-item">
-        <h4>Advanced Data Engineering Certification</h4>
-        <div class="org"><span class="hl">Sharif University of Technology</span> (ACECR) · 64 Hours</div>
-        <div class="date">2023</div>
-      </div>
-      <div class="t-item">
-        <h4>Python Programming in Bioinformatics</h4>
-        <div class="org"><span class="hl">University of Tehran</span> · 22 Hours</div>
-        <div class="date">2023</div>
-      </div>
-      <div class="t-item">
-        <h4>Bioinformatics Industrial Applications</h4>
-        <div class="org"><span class="hl">University of Tehran</span> · 12 Hours</div>
-        <div class="date">2023</div>
-      </div>
-      <div class="t-item" style="border-bottom:none;padding-bottom:0">
-        <h4>Applied Machine Learning Pipeline Mastery</h4>
-        <div class="org"><span class="hl">Coursera</span> · Verified Track</div>
-        <div class="date">2024</div>
-      </div>
+      <div class="t-item"><h4>Advanced Data Engineering Certification</h4><div class="org"><span class="hl">Sharif University of Technology</span> (ACECR) · 64 Hours</div><div class="date">2023</div></div>
+      <div class="t-item"><h4>Python Programming in Bioinformatics</h4><div class="org"><span class="hl">University of Tehran</span> · 22 Hours</div><div class="date">2023</div></div>
+      <div class="t-item"><h4>Bioinformatics Industrial Applications</h4><div class="org"><span class="hl">University of Tehran</span> · 12 Hours</div><div class="date">2023</div></div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0"><h4>Applied Machine Learning Pipeline Mastery</h4><div class="org"><span class="hl">Coursera</span> · Verified Track</div><div class="date">2024</div></div>
     </div>
   </template>
 
@@ -865,15 +597,8 @@
     <div class="p-eyebrow"><span class="dot"></span>Languages</div>
     <h2 class="p-title">Language Proficiency</h2>
     <div class="timeline">
-      <div class="t-item">
-        <h4>English <span style="color:var(--theme-green);font-weight:400;font-size:12px">· TOEFL iBT 98/120</span></h4>
-        <div class="org">Reading: 28 | Listening: 29 | Writing: 25 | Speaking: 16</div>
-        <div class="date">Fully exempt from institutional English testing (APU · DMU Dual Degree)</div>
-      </div>
-      <div class="t-item" style="border-bottom:none;padding-bottom:0">
-        <h4>Persian (Farsi)</h4>
-        <div class="org">Native · Full professional proficiency</div>
-      </div>
+      <div class="t-item"><h4>English <span style="color:var(--theme-green);font-weight:400;font-size:12px">· TOEFL iBT 98/120</span></h4><div class="org">Reading: 28 | Listening: 29 | Writing: 25 | Speaking: 16</div><div class="date">Fully exempt from institutional English testing (APU · DMU Dual Degree)</div></div>
+      <div class="t-item" style="border-bottom:none;padding-bottom:0"><h4>Persian (Farsi)</h4><div class="org">Native · Full professional proficiency</div></div>
     </div>
   </template>
 
@@ -881,18 +606,10 @@
     <div class="p-eyebrow"><span class="dot"></span>Contact</div>
     <h2 class="p-title">Let's Connect</h2>
     <p class="p-lead">Open to research collaboration, consulting, and data engineering in <strong style="color:var(--theme-green)">biotech</strong>, <strong style="color:var(--theme-blue)">bioinformatics</strong>, and <strong style="color:var(--theme-purple)">industrial AI</strong>.</p>
-    <div class="contact-row">
-      <div><div class="k">Email</div><div class="v">mosallanejadamin1400@gmail.com</div></div>
-    </div>
-    <div class="contact-row">
-      <div><div class="k">Location</div><div class="v">Shiraz, Iran</div></div>
-    </div>
-    <div class="contact-row">
-      <div><div class="k">Phone</div><div class="v">+98 917 017 1904</div></div>
-    </div>
-    <div class="contact-row" style="border-bottom:1px solid rgba(255,255,255,0.04)">
-      <div><div class="k">GitHub</div><div class="v"><a href="https://github.com/AminMosallanejad339" target="_blank" style="color:var(--theme-blue);text-decoration:none">AminMosallanejad339</a></div></div>
-    </div>
+    <div class="contact-row"><div><div class="k">Email</div><div class="v">mosallanejadamin1400@gmail.com</div></div></div>
+    <div class="contact-row"><div><div class="k">Location</div><div class="v">Shiraz, Iran</div></div></div>
+    <div class="contact-row"><div><div class="k">Phone</div><div class="v">+98 917 017 1904</div></div></div>
+    <div class="contact-row" style="border-bottom:1px solid rgba(255,255,255,0.04)"><div><div class="k">GitHub</div><div class="v"><a href="https://github.com/AminMosallanejad339" target="_blank" style="color:var(--theme-blue);text-decoration:none">AminMosallanejad339</a></div></div></div>
     <a class="btn" href="https://www.linkedin.com/in/amin-mosallanejad" target="_blank">
       <span>Connect on LinkedIn</span>
       <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
@@ -940,37 +657,48 @@
       svg.innerHTML=''; leaves.forEach(l=>l.remove()); leaves=[];
 
       const cx = W/2;
-      const narrow = W < 640;
+      const narrow = W < 768; 
       const short = H < 560;
-      const photoR = photo.getBoundingClientRect().width/2 || 70;
-      const cy = Math.max(photoR + (short?70:100), H*(short?0.42:0.42));
-      root.style.left='50%'; root.style.top=(cy-photoR)+'px'; root.style.transform='translateX(-50%)';
+      
+      // Locating Logo to the Left
+      const photoR = photo.getBoundingClientRect().width/2 || 60;
+      const logoLeftPos = narrow ? W/2 : W * 0.08 + photoR; 
+      const logoTopPos = narrow ? H*0.1 : H*0.15 + photoR;
 
-      const sideOffset = Math.max(narrow?18:26, Math.min(175, (cx - photoR) - 130));
-      const nodeXL = cx - photoR - sideOffset;
-      const nodeXR = cx + photoR + sideOffset;
-      const laneGap = Math.min(photoR + 56, H*(short?0.13:0.17));
-      const lanes = [cy - laneGap*1.5, cy - laneGap*0.5, cy + laneGap*0.5, cy + laneGap*1.5];
-      const topY = Math.max(40, cy - photoR - Math.min(H*0.18, 140));
+      root.style.left = narrow ? '50%' : (W * 0.08) + 'px';
+      root.style.top = (logoTopPos - photoR) + 'px';
+      root.style.transform = narrow ? 'translateX(-50%)' : 'none';
+      
+      identity.style.left = narrow ? '50%' : (W * 0.08) + 'px';
+      identity.style.top = (logoTopPos + photoR + 20) + 'px'; // Text below logo
+      identity.style.transform = narrow ? 'translateX(-50%)' : 'none';
+      identity.style.alignItems = narrow ? 'center' : 'flex-start';
 
-      identity.style.left='50%'; identity.style.transform='translateX(-50%)';
-      if(narrow || short){
-        const ih = identity.getBoundingClientRect().height || 120;
-        identity.style.top = Math.min(cy + laneGap + (short?24:38), H - ih - 10) + 'px';
-      } else {
-        identity.style.top = (cy + photoR + 12) + 'px';
-      }
+      // Calculating node positions relative to left/right sides
+      const sideOffset = Math.max(narrow?20:30, Math.min(150, (W * 0.5) - (W * 0.08)));
+      const nodeXL = (W * 0.08) - sideOffset;
+      const nodeXR = W - 60;
+      
+      const laneGap = Math.min(70, H * 0.12);
+      const centerY = H * 0.65; // Nodes moved lower to match the bottom half of the poster
+      const lanes = [centerY - laneGap*1.5, centerY - laneGap*0.5, centerY + laneGap*0.5, centerY + laneGap*1.5];
+      const topY = H * 0.5;
 
       const items = [];
       TOPICS.forEach((tp,i)=>{
         let sx, sy, nx, ny, d;
         if(tp.side==='top'){
-          sx=cx; sy=cy-photoR+2; nx=cx; ny=topY - (tp.id==='contact'? 0 : 0);
+          sx = narrow ? W/2 : W * 0.08 + photoR;
+          sy = logoTopPos + 10; 
+          nx = narrow ? W/2 : W - 80; 
+          ny = topY;
           d='M'+sx+','+sy+' L'+nx+','+ny;
         } else {
           const left = tp.side==='left';
-          sy=cy; sx = left ? cx-photoR+2 : cx+photoR-2;
-          nx = left ? nodeXL : nodeXR; ny = lanes[tp.lane] || lanes[0];
+          sy = logoTopPos + 10;
+          sx = narrow ? W/2 : (W * 0.08 + photoR);
+          nx = left ? nodeXL : nodeXR; 
+          ny = lanes[tp.lane] || lanes[0];
           d = sidePath(sx, sy, nx, ny, left);
         }
 
@@ -1037,18 +765,8 @@
     overlay.addEventListener('click',e=>{ if(e.target.hasAttribute('data-close')) closeOverlay(); });
     document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !overlay.hidden) closeOverlay(); });
 
-    // Theme toggle
-    const html=document.documentElement;
-    const saved=localStorage.getItem('theme');
-    if(saved) html.setAttribute('data-theme',saved);
-    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme','dark');
-    document.getElementById('themeToggle').addEventListener('click',()=>{
-      const next = html.getAttribute('data-theme')==='dark' ? 'light':'dark';
-      html.setAttribute('data-theme',next); localStorage.setItem('theme',next);
-    });
-
     function sizePhoto(){
-      const d=Math.max(100, Math.min(200, Math.min(stage.clientWidth,stage.clientHeight)*0.22));
+      const d=Math.max(80, Math.min(150, Math.min(stage.clientWidth,stage.clientHeight)*0.2));
       photo.style.width=d+'px'; photo.style.height=d+'px';
     }
     function init(){ sizePhoto(); build(); }
@@ -1058,7 +776,7 @@
     else init();
     if(document.fonts && document.fonts.ready){ document.fonts.ready.then(init); }
 
-    // ---------- Particle Network ----------
+    // Particle Network
     (function(){
       const c = document.getElementById('particles-canvas');
       const ctx = c.getContext('2d');
@@ -1067,81 +785,49 @@
       const N = 70;
       const CONN = 140;
 
-      function resize(){
-        w = c.width = window.innerWidth;
-        h = c.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resize);
-      resize();
+      function resize(){ w = c.width = window.innerWidth; h = c.height = window.innerHeight; }
+      window.addEventListener('resize', resize); resize();
 
       class Particle{
         constructor(){
-          this.x = Math.random() * w;
-          this.y = Math.random() * h;
-          this.vx = (Math.random() - 0.5) * 0.3;
-          this.vy = (Math.random() - 0.5) * 0.3;
+          this.x = Math.random() * w; this.y = Math.random() * h;
+          this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3;
           this.r = 1 + Math.random() * 1.2;
           this.colors = ['#00D4FF','#00FF94','#7C3AED','#FBBF24'];
           this.color = this.colors[Math.floor(Math.random()*4)];
         }
-        update(){
-          this.x += this.vx; this.y += this.vy;
-          if(this.x < 0 || this.x > w) this.vx *= -1;
-          if(this.y < 0 || this.y > h) this.vy *= -1;
-        }
+        update(){ this.x += this.vx; this.y += this.vy; if(this.x < 0 || this.x > w) this.vx *= -1; if(this.y < 0 || this.y > h) this.vy *= -1; }
         draw(){
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-          ctx.fillStyle = this.color;
-          ctx.shadowColor = this.color;
-          ctx.shadowBlur = 6;
-          ctx.fill();
-          ctx.shadowBlur = 0;
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.fillStyle = this.color; ctx.shadowColor = this.color; ctx.shadowBlur = 6; ctx.fill(); ctx.shadowBlur = 0;
         }
       }
-
       for(let i=0; i<N; i++) particles.push(new Particle());
 
       function drawLines(){
         for(let i=0; i<particles.length; i++){
           for(let j=i+1; j<particles.length; j++){
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
+            const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx*dx + dy*dy);
             if(dist < CONN){
               const op = 1 - (dist / CONN);
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(0,212,255,${op * 0.2})`;
-              ctx.lineWidth = 0.5;
-              ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0,212,255,${op * 0.2})`; ctx.lineWidth = 0.5; ctx.stroke();
             }
           }
         }
       }
 
-      function animate(){
-        ctx.clearRect(0,0,w,h);
-        particles.forEach(p => { p.update(); p.draw(); });
-        drawLines();
-        requestAnimationFrame(animate);
-      }
+      function animate(){ ctx.clearRect(0,0,w,h); particles.forEach(p => { p.update(); p.draw(); }); drawLines(); requestAnimationFrame(animate); }
       animate();
-
+      
       let mx=-1000, my=-1000;
       document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
       document.addEventListener('mouseleave', () => { mx=-1000; my=-1000; });
       setInterval(() => {
         particles.forEach(p => {
-          const dx = p.x - mx;
-          const dy = p.y - my;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if(dist < 100 && dist > 0){
-            const force = 0.4 / dist;
-            p.vx += dx * force * 0.02;
-            p.vy += dy * force * 0.02;
-          }
+          const dx = p.x - mx; const dy = p.y - my; const dist = Math.sqrt(dx*dx + dy*dy);
+          if(dist < 100 && dist > 0){ const force = 0.4 / dist; p.vx += dx * force * 0.02; p.vy += dy * force * 0.02; }
         });
       }, 50);
     })();
