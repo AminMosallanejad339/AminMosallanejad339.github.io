@@ -43,9 +43,8 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(5,8,15,0.3) 0%, rgba(5,8,15,0.75) 100%);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      /* برای اینکه سمت راست واضح‌تر باشد، گرادینت را طوری تنظیم کردیم که سمت چپ تیره‌تر باشد */
+      background: linear-gradient(90deg, rgba(5,8,15,0.85) 30%, rgba(5,8,15,0.0) 100%);
       z-index: 0;
       pointer-events: none;
     }
@@ -57,7 +56,7 @@
       width:100%;height:100%;
       z-index:1;
       pointer-events:none;
-      opacity: 0.3;
+      opacity: 0.25;
     }
 
     /* ---------- Stage ---------- */
@@ -73,7 +72,7 @@
       width:100%;
       height:100%;
       display:block;
-      opacity: 0.4;
+      opacity: 0.3;
     }
 
     /* Git lines */
@@ -124,8 +123,8 @@
       align-items:center;
       z-index:6;
       opacity:0;
-      left: 8%; 
-      top: 12%;
+      left: 6%; 
+      top: 10%;
       transform: none !important;
       animation:popIn .8s cubic-bezier(.22,.9,.28,1.2) .05s forwards;
     }
@@ -136,8 +135,8 @@
       display:flex;
       flex-direction:column;
       align-items:flex-start;
-      left: 8%;
-      top: 30%;
+      left: 6%;
+      top: 28%;
       transform: none !important;
       opacity:0;
       animation:popIn .8s cubic-bezier(.22,.9,.28,1.2) .2s forwards;
@@ -165,18 +164,7 @@
       border-radius:20px;
       margin-bottom:8px;
     }
-    .photo-wrap .ring{
-      position:absolute;
-      inset:-6px;
-      border-radius:20px;
-      border:2px solid transparent;
-      background:linear-gradient(135deg,var(--theme-blue),var(--theme-purple),var(--theme-green)) border-box;
-      -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
-      -webkit-mask-composite:xor;
-      mask-composite:exclude;
-      animation:spin-ring 10s linear infinite;
-    }
-    @keyframes spin-ring{ to{transform:rotate(360deg)} }
+    /* حلقه چرخان حذف شد! */
     .photo-wrap .glow{
       position:absolute;
       inset:-24px;
@@ -246,7 +234,7 @@
       stroke-width:2;
     }
 
-    /* ---------- Leaf Labels (منوها) ---------- */
+    /* ---------- Leaf Labels (منوها - همه سمت چپ) ---------- */
     .leaf{
       position:absolute;
       display:inline-flex;
@@ -255,7 +243,7 @@
       font-family:var(--font-mono);
       font-size:clamp(11px,1.2vw,14px);
       color:var(--text-primary);
-      background:rgba(0,0,0,0.5);
+      background:rgba(0,0,0,0.6);
       backdrop-filter:blur(8px);
       -webkit-backdrop-filter:blur(8px);
       border:1px solid rgba(255,255,255,0.15);
@@ -270,16 +258,18 @@
       -webkit-tap-highlight-color:transparent;
     }
     .leaf.show{opacity:1}
+    /* همه منوها به صورت چپ‌چین و در سمت چپ قرار می‌گیرند */
     .leaf.left{transform:translate(-105%,-50%);flex-direction:row-reverse}
-    .leaf.right{transform:translate(5%,-50%)}
-    .leaf.top{transform:translate(-50%,-105%)}
+    .leaf.right{transform:translate(-105%,-50%);flex-direction:row-reverse} 
+    .leaf.top{transform:translate(-105%,-50%);flex-direction:row-reverse}
+    
     .leaf:hover,.leaf:focus-visible{
       background:rgba(0,212,255,0.15);
       border-color:var(--theme-blue);
     }
     .leaf.left:hover{transform:translate(-105%,-50%) scale(1.05)}
-    .leaf.right:hover{transform:translate(5%,-50%) scale(1.05)}
-    .leaf.top:hover{transform:translate(-50%,-105%) scale(1.05)}
+    .leaf.right:hover{transform:translate(-105%,-50%) scale(1.05)}
+    .leaf.top:hover{transform:translate(-105%,-50%) scale(1.05)}
     .leaf .dot{
       width:8px;height:8px;
       border-radius:50%;
@@ -497,7 +487,6 @@
     <div class="root" id="root">
       <div class="photo-wrap">
         <div class="glow"></div>
-        <div class="ring"></div>
         <img class="photo" id="photo" src="LOGO.png" alt="Amin Mosallanejad Logo">
       </div>
     </div>
@@ -637,12 +626,12 @@
       { id:'about',          label:'About',         side:'left',  lane:0 },
       { id:'education',      label:'Education',     side:'left',  lane:1 },
       { id:'experience',     label:'Experience',    side:'left',  lane:2 },
-      { id:'projects',       label:'Projects',      side:'right', lane:0 },
-      { id:'publications',   label:'Publications',  side:'right', lane:1 },
-      { id:'skills',         label:'Skills',        side:'right', lane:2 },
-      { id:'certifications', label:'Certifications',side:'left',  lane:3 },
-      { id:'languages',      label:'Languages',     side:'right', lane:3 },
-      { id:'contact',        label:'Contact',       side:'top',   blog:false },
+      { id:'projects',       label:'Projects',      side:'left',  lane:3 },
+      { id:'publications',   label:'Publications',  side:'left',  lane:4 },
+      { id:'skills',         label:'Skills',        side:'left',  lane:5 },
+      { id:'certifications', label:'Certifications',side:'left',  lane:6 },
+      { id:'languages',      label:'Languages',     side:'left',  lane:7 },
+      { id:'contact',        label:'Contact',       side:'left',  lane:8 },
     ];
 
     const stage = document.getElementById('stage');
@@ -652,13 +641,11 @@
     const identity = document.getElementById('identity');
     let leaves = [];
 
-    function sidePath(sx, sy, nx, ny, left){
-      const run = 30;
-      const kx = left ? nx + run : nx - run;
-      const h = Math.max(20, Math.abs(kx - sx) * 0.45);
-      const c1x = left ? sx - h : sx + h;
-      const c2x = left ? kx + h : kx - h;
-      return 'M'+sx+','+sy+' C'+c1x+','+sy+' '+c2x+','+ny+' '+kx+','+ny+' L'+nx+','+ny;
+    function sidePath(sx, sy, nx, ny){
+      const h = Math.abs(sy - ny) * 0.5;
+      const c1x = sx - h;
+      const c2x = nx - h;
+      return 'M'+sx+','+sy+' C'+c1x+','+sy+' '+c2x+','+ny+' '+nx+','+ny;
     }
 
     function build(){
@@ -671,7 +658,7 @@
       
       const photoR = photo.getBoundingClientRect().width/2 || 60;
       
-      // لوگو در سمت چپ در دسکتاپ، وسط در موبایل
+      // لوگو در سمت چپ
       let logoX, logoY;
       if(isMobile){
         logoX = cx;
@@ -680,51 +667,39 @@
         identity.style.left = '50%'; identity.style.transform = 'translateX(-50%)';
         identity.style.alignItems = 'center';
       } else {
-        logoX = W * 0.08 + photoR;
-        logoY = H * 0.12 + photoR;
-        root.style.left = (W * 0.08) + 'px'; root.style.transform = 'none';
-        identity.style.left = (W * 0.08) + 'px'; identity.style.transform = 'none';
+        logoX = W * 0.06 + photoR;
+        logoY = H * 0.10 + photoR;
+        root.style.left = (W * 0.06) + 'px'; root.style.transform = 'none';
+        identity.style.left = (W * 0.06) + 'px'; identity.style.transform = 'none';
         identity.style.alignItems = 'flex-start';
       }
       root.style.top = (logoY - photoR) + 'px';
       identity.style.top = (logoY + photoR + 20) + 'px';
 
-      // مکان‌یابی منوها (در دسکتاپ چپ و راست، در موبایل همه پایین)
-      let sideOffset, nodeXL, nodeXR, centerY, lanes, topY;
+      // محاسبه نقاط برای منوها (همه در سمت چپ)
+      let sideOffset, nodeX, centerY;
       if(isMobile){
         sideOffset = 40; 
-        nodeXL = 40;
-        nodeXR = W - 40;
+        nodeX = 40;
         centerY = H * 0.55;
-        const laneGap = Math.min(50, H * 0.1);
-        lanes = [centerY - laneGap*1.5, centerY - laneGap*0.5, centerY + laneGap*0.5, centerY + laneGap*1.5];
-        topY = H * 0.45;
       } else {
-        sideOffset = Math.max(30, Math.min(150, (W * 0.5) - (W * 0.08)));
-        nodeXL = (W * 0.08) - sideOffset; // سمت چپ
-        nodeXR = W - 60; // سمت راست
-        centerY = H * 0.65;
-        const laneGap = Math.min(70, H * 0.12);
-        lanes = [centerY - laneGap*1.5, centerY - laneGap*0.5, centerY + laneGap*0.5, centerY + laneGap*1.5];
-        topY = H * 0.5;
+        sideOffset = Math.max(30, Math.min(200, (W * 0.30)));
+        nodeX = (W * 0.06) - sideOffset; // همه لینک‌ها در سمت چپ
+        centerY = H * 0.45;
       }
-
+      
+      // تنظیم فاصله عمودی لینک‌ها
+      const laneGap = Math.min(65, H * 0.1);
+      const lanes = [centerY - laneGap*2.5, centerY - laneGap*1.5, centerY - laneGap*0.5, centerY + laneGap*0.5, centerY + laneGap*1.5, centerY + laneGap*2.5, centerY + laneGap*3.5, centerY + laneGap*4.5, centerY + laneGap*5.5];
+      
       const items = [];
       TOPICS.forEach((tp,i)=>{
-        let sx, sy, nx, ny, d;
-        if(tp.side==='top'){
-          sx = logoX; sy = logoY + 10; 
-          nx = isMobile ? W/2 : W - 80; 
-          ny = topY;
-          d='M'+sx+','+sy+' L'+nx+','+ny;
-        } else {
-          const left = tp.side==='left';
-          sy = logoY + 10;
-          sx = logoX;
-          nx = left ? nodeXL : nodeXR; 
-          ny = lanes[tp.lane] || lanes[0];
-          d = sidePath(sx, sy, nx, ny, left);
-        }
+        let sy = logoY + 10;
+        let sx = logoX;
+        let ny = lanes[tp.lane] || lanes[0];
+        let nx = nodeX;
+        
+        let d = sidePath(sx, sy, nx, ny);
 
         const path=document.createElementNS(SVGNS,'path');
         path.setAttribute('class','gitline'+(tp.blog?' blog':''));
@@ -750,12 +725,9 @@
         setTimeout(()=>g.classList.add('show'), delay+500);
 
         const leaf=document.createElement('button');
-        leaf.className='leaf '+tp.side; leaf.dataset.id=tp.id;
+        leaf.className='leaf left'; leaf.dataset.id=tp.id; // همه دکمه‌ها کلاس left می‌گیرند
         leaf.style.setProperty('--leaf-color', tp.blog ? BLOG_COLOR : ACCENT);
-        let lx=nx, ly=ny;
-        if(tp.side==='left'){ lx=nx-10; }
-        else if(tp.side==='right'){ lx=nx+10; }
-        else { ly=ny-10; }
+        let lx=nx-10, ly=ny;
         leaf.style.left=lx+'px'; leaf.style.top=ly+'px';
         leaf.textContent=tp.label;
         stage.appendChild(leaf); leaves.push(leaf);
