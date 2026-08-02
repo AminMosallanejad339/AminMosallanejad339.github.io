@@ -38,13 +38,12 @@
       background-repeat: no-repeat;
     }
 
-    /* لایه یکپارچه‌کننده و تیره‌کننده (Match) */
+    /* لایه تیره‌کننده - سمت چپ تیره‌تر برای خوانایی، سمت راست شفاف برای دیده شدن پوستر */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      /* برای اینکه سمت راست واضح‌تر باشد، گرادینت را طوری تنظیم کردیم که سمت چپ تیره‌تر باشد */
-      background: linear-gradient(90deg, rgba(5,8,15,0.85) 30%, rgba(5,8,15,0.0) 100%);
+      background: linear-gradient(90deg, rgba(5,8,15,0.9) 30%, rgba(5,8,15,0.0) 100%);
       z-index: 0;
       pointer-events: none;
     }
@@ -56,7 +55,7 @@
       width:100%;height:100%;
       z-index:1;
       pointer-events:none;
-      opacity: 0.25;
+      opacity: 0.2;
     }
 
     /* ---------- Stage ---------- */
@@ -72,24 +71,24 @@
       width:100%;
       height:100%;
       display:block;
-      opacity: 0.3;
+      opacity: 0.2;
     }
 
-    /* Git lines */
+    /* خطوط عمودی منو */
     .gitline{
       fill:none;
       stroke:rgba(255,255,255,0.15);
-      stroke-width:2.5;
+      stroke-width:2;
       stroke-linecap:round;
       stroke-linejoin:round;
       transition:stroke .3s ease,stroke-width .3s ease,opacity .25s ease;
     }
-    .gitline.dim{opacity:.15}
-    .gitline.hot{stroke:var(--theme-blue);stroke-width:3.5;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
+    .gitline.dim{opacity:.1}
+    .gitline.hot{stroke:var(--theme-blue);stroke-width:2.5;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
     .gitline.blog{stroke:var(--theme-gold)}
     .gitline.blog.hot{stroke:var(--theme-gold);filter:drop-shadow(0 0 8px rgba(251,191,36,0.3))}
 
-    /* Nodes */
+    /* گره‌های دکمه‌ها */
     .node{
       opacity:0;
       transition:opacity .4s ease,transform .3s ease;
@@ -115,7 +114,7 @@
     .node.blog .node-halo{fill:var(--theme-gold)}
     .node.hot .node-halo{opacity:.25}
 
-    /* ---------- Root (Profile) & Identity ---------- */
+    /* ---------- Root (Profile) ---------- */
     .root{
       position:absolute;
       display:flex;
@@ -124,7 +123,7 @@
       z-index:6;
       opacity:0;
       left: 6%; 
-      top: 10%;
+      top: 12%;
       transform: none !important;
       animation:popIn .8s cubic-bezier(.22,.9,.28,1.2) .05s forwards;
     }
@@ -136,7 +135,7 @@
       flex-direction:column;
       align-items:flex-start;
       left: 6%;
-      top: 28%;
+      top: 25%;
       transform: none !important;
       opacity:0;
       animation:popIn .8s cubic-bezier(.22,.9,.28,1.2) .2s forwards;
@@ -156,15 +155,14 @@
       user-select:none;
       -webkit-user-drag:none;
       padding:5px;
-      width:140px; 
-      height:140px;
+      width:130px; 
+      height:130px;
     }
     .photo-wrap{
       position:relative;
       border-radius:20px;
       margin-bottom:8px;
     }
-    /* حلقه چرخان حذف شد! */
     .photo-wrap .glow{
       position:absolute;
       inset:-24px;
@@ -189,14 +187,14 @@
     }
     .tagline{
       font-family:var(--font-body);
-      margin:2px 0;
+      margin:1px 0;
       color:var(--text-primary);
       font-size:clamp(13px,1.3vw,16px);
       white-space:nowrap;
       text-shadow: 0 2px 15px rgba(0,0,0,0.9);
     }
     .tagline-2{
-      margin:2px 0 8px;
+      margin:1px 0 4px;
       color:var(--theme-green);
       font-weight:500;
       font-size:clamp(12px,1.1vw,14px);
@@ -206,10 +204,10 @@
     .socials-row{
       display:flex;
       gap:10px;
-      margin-top:12px;
+      margin-top:15px;
     }
     .socials-row a{
-      width:38px;height:38px;
+      width:36px;height:36px;
       border-radius:10px;
       display:flex;
       align-items:center;
@@ -227,14 +225,14 @@
       background:rgba(0,212,255,0.2);
     }
     .socials-row svg{
-      width:17px;height:17px;
+      width:16px;height:16px;
       display:block;
       stroke:currentColor;
       fill:none;
       stroke-width:2;
     }
 
-    /* ---------- Leaf Labels (منوها - همه سمت چپ) ---------- */
+    /* ---------- Leaf Labels (منوها - در پایین و چپ) ---------- */
     .leaf{
       position:absolute;
       display:inline-flex;
@@ -243,7 +241,7 @@
       font-family:var(--font-mono);
       font-size:clamp(11px,1.2vw,14px);
       color:var(--text-primary);
-      background:rgba(0,0,0,0.6);
+      background:rgba(0,0,0,0.5);
       backdrop-filter:blur(8px);
       -webkit-backdrop-filter:blur(8px);
       border:1px solid rgba(255,255,255,0.15);
@@ -258,18 +256,13 @@
       -webkit-tap-highlight-color:transparent;
     }
     .leaf.show{opacity:1}
-    /* همه منوها به صورت چپ‌چین و در سمت چپ قرار می‌گیرند */
-    .leaf.left{transform:translate(-105%,-50%);flex-direction:row-reverse}
-    .leaf.right{transform:translate(-105%,-50%);flex-direction:row-reverse} 
-    .leaf.top{transform:translate(-105%,-50%);flex-direction:row-reverse}
+    .leaf.left{transform:translate(10%, -50%);} /* همه در سمت چپ کنار هم */
     
     .leaf:hover,.leaf:focus-visible{
       background:rgba(0,212,255,0.15);
       border-color:var(--theme-blue);
     }
-    .leaf.left:hover{transform:translate(-105%,-50%) scale(1.05)}
-    .leaf.right:hover{transform:translate(-105%,-50%) scale(1.05)}
-    .leaf.top:hover{transform:translate(-105%,-50%) scale(1.05)}
+    .leaf.left:hover{transform:translate(10%, -50%) scale(1.05)}
     .leaf .dot{
       width:8px;height:8px;
       border-radius:50%;
@@ -341,7 +334,7 @@
     @keyframes fade{from{opacity:0}to{opacity:1}}
     @keyframes rise{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
 
-    /* ---------- Panel Content (محتویات داخلی) ---------- */
+    /* ---------- Panel Content ---------- */
     .p-eyebrow{
       display:flex;
       align-items:center;
@@ -457,8 +450,8 @@
     }
 
     @media(max-width:768px){
-      .root{ left: 50% !important; top: 8% !important; transform: translateX(-50%) !important; }
-      .identity{ left: 50% !important; top: 28% !important; transform: translateX(-50%) !important; align-items: center !important; text-align: center; }
+      .root{ left: 50% !important; top: 6% !important; transform: translateX(-50%) !important; }
+      .identity{ left: 50% !important; top: 25% !important; transform: translateX(-50%) !important; align-items: center !important; text-align: center; }
       .photo{ width:90px; height:90px; }
       .leaf{ font-size:10px; padding:4px 10px; }
       .socials-row a{ width:32px;height:32px; }
@@ -495,6 +488,7 @@
       <h1 class="name">Amin Mosallanejad</h1>
       <p class="tagline">Bio-Data Scientist · Chemical Engineer</p>
       <p class="tagline tagline-2">ML · Biotech · Data Engineering</p>
+      
       <div class="socials-row">
         <a href="https://github.com/AminMosallanejad339" target="_blank" aria-label="GitHub">
           <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
@@ -623,15 +617,15 @@
     const BLOG_COLOR='#FBBF24';
 
     const TOPICS = [
-      { id:'about',          label:'About',         side:'left',  lane:0 },
-      { id:'education',      label:'Education',     side:'left',  lane:1 },
-      { id:'experience',     label:'Experience',    side:'left',  lane:2 },
-      { id:'projects',       label:'Projects',      side:'left',  lane:3 },
-      { id:'publications',   label:'Publications',  side:'left',  lane:4 },
-      { id:'skills',         label:'Skills',        side:'left',  lane:5 },
-      { id:'certifications', label:'Certifications',side:'left',  lane:6 },
-      { id:'languages',      label:'Languages',     side:'left',  lane:7 },
-      { id:'contact',        label:'Contact',       side:'left',  lane:8 },
+      { id:'about',          label:'About',         side:'left',  pos:0 },
+      { id:'education',      label:'Education',     side:'left',  pos:1 },
+      { id:'experience',     label:'Experience',    side:'left',  pos:2 },
+      { id:'projects',       label:'Projects',      side:'left',  pos:3 },
+      { id:'publications',   label:'Publications',  side:'left',  pos:4 },
+      { id:'skills',         label:'Skills',        side:'left',  pos:5 },
+      { id:'certifications', label:'Certifications',side:'left',  pos:6 },
+      { id:'languages',      label:'Languages',     side:'left',  pos:7 },
+      { id:'contact',        label:'Contact',       side:'left',  pos:8 },
     ];
 
     const stage = document.getElementById('stage');
@@ -640,13 +634,6 @@
     const root = document.getElementById('root');
     const identity = document.getElementById('identity');
     let leaves = [];
-
-    function sidePath(sx, sy, nx, ny){
-      const h = Math.abs(sy - ny) * 0.5;
-      const c1x = sx - h;
-      const c2x = nx - h;
-      return 'M'+sx+','+sy+' C'+c1x+','+sy+' '+c2x+','+ny+' '+nx+','+ny;
-    }
 
     function build(){
       const W = stage.clientWidth, H = stage.clientHeight;
@@ -659,50 +646,61 @@
       const photoR = photo.getBoundingClientRect().width/2 || 60;
       
       // لوگو در سمت چپ
-      let logoX, logoY;
+      let logoX, logoY, textAlign, LeftPos;
       if(isMobile){
         logoX = cx;
         logoY = H * 0.08 + photoR;
+        LeftPos = '50%';
+        textAlign = 'center';
         root.style.left = '50%'; root.style.transform = 'translateX(-50%)';
         identity.style.left = '50%'; identity.style.transform = 'translateX(-50%)';
         identity.style.alignItems = 'center';
       } else {
-        logoX = W * 0.06 + photoR;
-        logoY = H * 0.10 + photoR;
-        root.style.left = (W * 0.06) + 'px'; root.style.transform = 'none';
-        identity.style.left = (W * 0.06) + 'px'; identity.style.transform = 'none';
+        logoX = W * 0.05 + photoR;
+        logoY = H * 0.08 + photoR;
+        LeftPos = (W * 0.05) + 'px';
+        textAlign = 'flex-start';
+        root.style.left = (W * 0.05) + 'px'; root.style.transform = 'none';
+        identity.style.left = (W * 0.05) + 'px'; identity.style.transform = 'none';
         identity.style.alignItems = 'flex-start';
       }
       root.style.top = (logoY - photoR) + 'px';
       identity.style.top = (logoY + photoR + 20) + 'px';
 
-      // محاسبه نقاط برای منوها (همه در سمت چپ)
-      let sideOffset, nodeX, centerY;
+      // محاسبه نقاط برای منوها (همه در سمت چپ، زیر هم)
+      let menuX;
       if(isMobile){
-        sideOffset = 40; 
-        nodeX = 40;
-        centerY = H * 0.55;
+        menuX = 40;
       } else {
-        sideOffset = Math.max(30, Math.min(200, (W * 0.30)));
-        nodeX = (W * 0.06) - sideOffset; // همه لینک‌ها در سمت چپ
-        centerY = H * 0.45;
+        // فاصله از لبه سمت چپ صفحه برای ستون منوها (کمی دورتر از لوگو)
+        menuX = (W * 0.05) + 180; 
       }
       
-      // تنظیم فاصله عمودی لینک‌ها
-      const laneGap = Math.min(65, H * 0.1);
-      const lanes = [centerY - laneGap*2.5, centerY - laneGap*1.5, centerY - laneGap*0.5, centerY + laneGap*0.5, centerY + laneGap*1.5, centerY + laneGap*2.5, centerY + laneGap*3.5, centerY + laneGap*4.5, centerY + laneGap*5.5];
+      // محاسبه نقطه شروع Y برای لیست منوها (درست زیر اطلاعات)
+      let startY;
+      if(isMobile){
+        startY = H * 0.5;
+      } else {
+        // این فاصله دقیقاً زیر آخرین تگ‌لاین (ML · Biotech ...) و آیکون‌ها محاسبه می‌شود
+        startY = logoY + photoR + 120; 
+      }
+      
+      const laneGap = Math.min(60, H * 0.08);
       
       const items = [];
       TOPICS.forEach((tp,i)=>{
         let sy = logoY + 10;
         let sx = logoX;
-        let ny = lanes[tp.lane] || lanes[0];
-        let nx = nodeX;
         
-        let d = sidePath(sx, sy, nx, ny);
+        // محاسبه Y برای هر دکمه به صورت پله‌ای
+        let ny = startY + (i * laneGap);
+        let nx = menuX;
+        
+        // رسم خط اتصال مستقیم
+        let d = 'M'+sx+','+sy+' L'+nx+','+ny;
 
         const path=document.createElementNS(SVGNS,'path');
-        path.setAttribute('class','gitline'+(tp.blog?' blog':''));
+        path.setAttribute('class','gitline');
         path.setAttribute('d',d);
         path.dataset.id=tp.id;
         svg.appendChild(path);
@@ -715,7 +713,7 @@
         });
 
         const g=document.createElementNS(SVGNS,'g');
-        g.setAttribute('class','node'+(tp.blog?' blog':''));
+        g.setAttribute('class','node');
         g.dataset.id=tp.id;
         const halo=document.createElementNS(SVGNS,'circle');
         halo.setAttribute('class','node-halo'); halo.setAttribute('cx',nx); halo.setAttribute('cy',ny); halo.setAttribute('r',12);
@@ -725,8 +723,8 @@
         setTimeout(()=>g.classList.add('show'), delay+500);
 
         const leaf=document.createElement('button');
-        leaf.className='leaf left'; leaf.dataset.id=tp.id; // همه دکمه‌ها کلاس left می‌گیرند
-        leaf.style.setProperty('--leaf-color', tp.blog ? BLOG_COLOR : ACCENT);
+        leaf.className='leaf left'; leaf.dataset.id=tp.id;
+        leaf.style.setProperty('--leaf-color', ACCENT);
         let lx=nx-10, ly=ny;
         leaf.style.left=lx+'px'; leaf.style.top=ly+'px';
         leaf.textContent=tp.label;
@@ -762,7 +760,7 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !overlay.hidden) closeOverlay(); });
 
     function sizePhoto(){
-      const d=Math.max(80, Math.min(150, Math.min(stage.clientWidth,stage.clientHeight)*0.2));
+      const d=Math.max(80, Math.min(130, Math.min(stage.clientWidth,stage.clientHeight)*0.18));
       photo.style.width=d+'px'; photo.style.height=d+'px';
     }
     function init(){ sizePhoto(); build(); }
