@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Amin Mosallanejad · Bio-Data Scientist</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
-
+  <link rel="icon" href="LOGO.png">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -18,11 +18,11 @@
       --font-body:'Inter',sans-serif;
       --font-mono:'JetBrains Mono',monospace;
 
-      /* Bio-Data Colors */
-      --dna-blue:#00D4FF;
-      --bio-green:#00FF94;
-      --ai-purple:#7C3AED;
-      --gold:#FBBF24;
+      /* Bio-Data Colors matching your Logo */
+      --theme-blue:#00D4FF;
+      --theme-green:#00FF94;
+      --theme-purple:#7C3AED;
+      --theme-gold:#FBBF24;
       --bg-deep:#0A0E1A;
       --bg-card:rgba(17,24,39,0.85);
       --bg-card-hover:#1F2937;
@@ -78,9 +78,9 @@
       transition:stroke .3s ease,stroke-width .3s ease,opacity .25s ease;
     }
     .gitline.dim{opacity:.15}
-    .gitline.hot{stroke:var(--dna-blue);stroke-width:3.5;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
-    .gitline.blog{stroke:var(--gold)}
-    .gitline.blog.hot{stroke:var(--gold);filter:drop-shadow(0 0 8px rgba(251,191,36,0.3))}
+    .gitline.hot{stroke:var(--theme-blue);stroke-width:3.5;filter:drop-shadow(0 0 8px rgba(0,212,255,0.3))}
+    .gitline.blog{stroke:var(--theme-gold)}
+    .gitline.blog.hot{stroke:var(--theme-gold);filter:drop-shadow(0 0 8px rgba(251,191,36,0.3))}
 
     /* Nodes */
     .node{
@@ -98,14 +98,14 @@
       stroke-width:2.5px;
       transition:fill .3s ease;
     }
-    .node.hot .node-core{fill:var(--dna-blue);box-shadow:0 0 20px rgba(0,212,255,0.4)}
-    .node.blog .node-core{fill:var(--gold)}
+    .node.hot .node-core{fill:var(--theme-blue);box-shadow:0 0 20px rgba(0,212,255,0.4)}
+    .node.blog .node-core{fill:var(--theme-gold)}
     .node-halo{
-      fill:var(--dna-blue);
+      fill:var(--theme-blue);
       opacity:0;
       transition:opacity .3s ease;
     }
-    .node.blog .node-halo{fill:var(--gold)}
+    .node.blog .node-halo{fill:var(--theme-gold)}
     .node.hot .node-halo{opacity:.25}
 
     /* ---------- Root (Profile) ---------- */
@@ -133,24 +133,25 @@
     }
 
     .photo{
-      border-radius:50%;
-      object-fit:cover;
-      border:3px solid rgba(0,212,255,0.2);
+      object-fit:contain; /* Keeps logo shape */
+      border-radius:20px; /* Soft square corners like a pro logo */
+      border:2px solid rgba(0,212,255,0.2);
       box-shadow:0 0 0 1px rgba(0,212,255,0.1), 0 20px 60px -20px rgba(0,0,0,0.8);
-      background:var(--bg-card);
+      background:transparent;
       user-select:none;
       -webkit-user-drag:none;
+      padding:5px; /* Space between logo and border */
     }
     .photo-wrap{
       position:relative;
-      border-radius:50%;
+      border-radius:20px;
     }
     .photo-wrap .ring{
       position:absolute;
       inset:-6px;
-      border-radius:50%;
+      border-radius:20px;
       border:2px solid transparent;
-      background:linear-gradient(135deg,var(--dna-blue),var(--ai-purple),var(--bio-green)) border-box;
+      background:linear-gradient(135deg,var(--theme-blue),var(--theme-purple),var(--theme-green)) border-box;
       -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
       -webkit-mask-composite:xor;
       mask-composite:exclude;
@@ -162,7 +163,7 @@
     .photo-wrap .glow{
       position:absolute;
       inset:-24px;
-      border-radius:50%;
+      border-radius:20px;
       background:radial-gradient(circle,rgba(0,212,255,0.08),transparent 70%);
       filter:blur(24px);
       pointer-events:none;
@@ -177,7 +178,7 @@
       font-size:clamp(24px,3vw,32px);
       text-align:center;
       line-height:1.15;
-      background:linear-gradient(135deg,#fff 30%,var(--dna-blue));
+      background:linear-gradient(135deg,#fff 30%,var(--theme-blue));
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       background-clip:text;
@@ -192,7 +193,7 @@
     }
     .tagline-2{
       margin-top:2px;
-      color:var(--bio-green);
+      color:var(--theme-green);
       font-weight:500;
       font-size:clamp(11px,1.1vw,14px);
     }
@@ -215,8 +216,8 @@
     }
     .socials-row a:hover{
       transform:translateY(-3px);
-      border-color:var(--dna-blue);
-      color:var(--dna-blue);
+      border-color:var(--theme-blue);
+      color:var(--theme-blue);
       background:rgba(0,212,255,0.06);
       box-shadow:0 8px 30px rgba(0,212,255,0.08);
     }
@@ -310,7 +311,7 @@
       position:absolute;
       top:0;left:0;right:0;
       height:4px;
-      background:linear-gradient(90deg,var(--dna-blue),var(--ai-purple),var(--bio-green));
+      background:linear-gradient(90deg,var(--theme-blue),var(--theme-purple),var(--theme-green));
       border-radius:24px 24px 0 0;
     }
     .sheet-close{
@@ -342,7 +343,7 @@
       align-items:center;
       gap:9px;
       font-family:var(--font-mono);
-      color:var(--dna-blue);
+      color:var(--theme-blue);
       font-size:11px;
       font-weight:500;
       letter-spacing:1px;
@@ -352,7 +353,7 @@
     .p-eyebrow .dot{
       width:8px;height:8px;
       border-radius:50%;
-      background:var(--dna-blue);
+      background:var(--theme-blue);
     }
     .p-title{
       font-family:var(--font-display);
@@ -383,7 +384,7 @@
       left:-6px;top:5px;
       width:10px;height:10px;
       border-radius:50%;
-      background:var(--dna-blue);
+      background:var(--theme-blue);
       box-shadow:0 0 20px rgba(0,212,255,0.2);
     }
     .t-item h4{
@@ -396,7 +397,7 @@
       font-size:12.5px;
       color:var(--text-secondary);
     }
-    .t-item .org .hl{color:var(--bio-green)}
+    .t-item .org .hl{color:var(--theme-green)}
     .t-item .date{
       margin:4px 0 0;
       font-family:var(--font-mono);
@@ -427,22 +428,22 @@
       font-family:var(--font-mono);
     }
     .pill.accent{
-      color:var(--dna-blue);
+      color:var(--theme-blue);
       border-color:rgba(0,212,255,0.15);
       background:rgba(0,212,255,0.06);
     }
     .pill.green{
-      color:var(--bio-green);
+      color:var(--theme-green);
       border-color:rgba(0,255,148,0.15);
       background:rgba(0,255,148,0.06);
     }
     .pill.purple{
-      color:var(--ai-purple);
+      color:var(--theme-purple);
       border-color:rgba(124,58,237,0.15);
       background:rgba(124,58,237,0.06);
     }
     .pill.gold{
-      color:var(--gold);
+      color:var(--theme-gold);
       border-color:rgba(251,191,36,0.15);
       background:rgba(251,191,36,0.06);
     }
@@ -472,13 +473,13 @@
       transition:color .3s;
       flex:none;
     }
-    .proj a.gh:hover{color:var(--dna-blue)}
+    .proj a.gh:hover{color:var(--theme-blue)}
     .proj a.gh svg{width:17px;height:17px;fill:currentColor}
     .pub-year{
       font-family:var(--font-mono);
       font-size:15px;
       font-weight:500;
-      color:var(--gold);
+      color:var(--theme-gold);
       margin:18px 0 10px;
     }
     .pub-year:first-child{margin-top:0}
@@ -486,8 +487,8 @@
     .pub .pt{margin:0;font-size:13px;font-weight:600;line-height:1.4}
     .pub .pa{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary)}
     .pub .pj{margin:2px 0 0;font-size:11.5px;color:var(--text-secondary);font-style:italic}
-    .pub .pl{margin:2px 0 0;font-size:11px;color:var(--dna-blue)}
-    .pub .pl a{color:var(--dna-blue);text-decoration:none}
+    .pub .pl{margin:2px 0 0;font-size:11px;color:var(--theme-blue)}
+    .pub .pl a{color:var(--theme-blue);text-decoration:none}
     .pub .pl a:hover{text-decoration:underline}
     .contact-row{
       display:flex;
@@ -500,7 +501,7 @@
     .contact-row .ico{
       width:20px;height:20px;
       flex:none;
-      color:var(--dna-blue);
+      color:var(--theme-blue);
       display:block;
       stroke:currentColor;
       fill:none;
@@ -519,7 +520,7 @@
       align-items:center;
       gap:8px;
       margin-top:20px;
-      background:linear-gradient(135deg,var(--dna-blue),var(--ai-purple));
+      background:linear-gradient(135deg,var(--theme-blue),var(--theme-purple));
       color:#fff;
       border:none;
       border-radius:12px;
@@ -539,7 +540,7 @@
     .morelink{
       display:inline-block;
       margin-top:14px;
-      color:var(--dna-blue);
+      color:var(--theme-blue);
       font-size:12.5px;
       font-weight:500;
       text-decoration:none;
@@ -561,22 +562,22 @@
       font-family:var(--font-mono);
     }
     .badge-grid .badge.accent{
-      color:var(--dna-blue);
+      color:var(--theme-blue);
       border-color:rgba(0,212,255,0.12);
       background:rgba(0,212,255,0.05);
     }
     .badge-grid .badge.green{
-      color:var(--bio-green);
+      color:var(--theme-green);
       border-color:rgba(0,255,148,0.12);
       background:rgba(0,255,148,0.05);
     }
     .badge-grid .badge.purple{
-      color:var(--ai-purple);
+      color:var(--theme-purple);
       border-color:rgba(124,58,237,0.12);
       background:rgba(124,58,237,0.05);
     }
     .badge-grid .badge.gold{
-      color:var(--gold);
+      color:var(--theme-gold);
       border-color:rgba(251,191,36,0.12);
       background:rgba(251,191,36,0.05);
     }
@@ -595,7 +596,7 @@
     }
     .ref-item .rn{font-weight:600;color:var(--text-primary)}
     .ref-item .rt{color:var(--text-secondary);font-size:10.5px;margin:2px 0}
-    .ref-item .re{color:var(--dna-blue);font-size:10.5px}
+    .ref-item .re{color:var(--theme-blue);font-size:10.5px}
     .ref-item .rp{color:var(--text-secondary);font-size:10.5px}
 
     @media(max-width:500px){
@@ -656,14 +657,14 @@
       <div class="photo-wrap">
         <div class="glow"></div>
         <div class="ring"></div>
-        <img class="photo" id="photo" src="https://ui-avatars.com/api/?name=Amin+Mosallanejad&size=200&background=0A0E1A&color=00D4FF&bold=true" alt="Amin Mosallanejad">
+        <img class="photo" id="photo" src="LOGO.png" alt="Amin Mosallanejad Logo">
       </div>
     </div>
 
     <div class="identity" id="identity">
       <h1 class="name">Amin Mosallanejad</h1>
       <p class="tagline">Bio-Data Scientist · Chemical Engineer</p>
-      <p class="tagline tagline-2">🧬 ML · Biotech · Data Engineering</p>
+      <p class="tagline tagline-2">ML · Biotech · Data Engineering</p>
       <div class="socials-row">
         <a href="https://github.com/AminMosallanejad339" target="_blank" aria-label="GitHub">
           <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
@@ -692,24 +693,24 @@
     </div>
   </div>
 
-  <!-- Templates -->
+  <!-- Templates (Emojis Removed) -->
   <template id="tpl-about">
-    <div class="p-eyebrow"><span class="dot"></span>🧬 About</div>
+    <div class="p-eyebrow"><span class="dot"></span>About</div>
     <h2 class="p-title">Amin Mosallanejad</h2>
-    <p class="p-lead"><strong style="color:var(--bio-green)">Chemical Engineer</strong> → <strong style="color:var(--dna-blue)">Bio-Data Scientist</strong> · <span style="color:var(--ai-purple)">17+ years</span> industry experience</p>
-    <p class="p-lead">Bridging <strong style="color:var(--bio-green)">biotechnology</strong>, <strong style="color:var(--dna-blue)">data science</strong>, and <strong style="color:var(--ai-purple)">bioinformatics</strong> to optimize industrial bioprocesses, wastewater treatment, and environmental systems using ML &amp; data engineering.</p>
-    <p class="p-lead" style="margin-top:-10px">📍 <strong>Location:</strong> Shiraz, Iran</p>
+    <p class="p-lead"><strong style="color:var(--theme-green)">Chemical Engineer</strong> → <strong style="color:var(--theme-blue)">Bio-Data Scientist</strong> · <span style="color:var(--theme-purple)">17+ years</span> industry experience</p>
+    <p class="p-lead">Bridging <strong style="color:var(--theme-green)">biotechnology</strong>, <strong style="color:var(--theme-blue)">data science</strong>, and <strong style="color:var(--theme-purple)">bioinformatics</strong> to optimize industrial bioprocesses, wastewater treatment, and environmental systems using ML &amp; data engineering.</p>
+    <p class="p-lead" style="margin-top:-10px"><strong>Location:</strong> Shiraz, Iran</p>
     <div class="pills">
-      <span class="pill accent">🧪 Bioprocess Optimization</span>
-      <span class="pill green">💧 Wastewater AI</span>
-      <span class="pill purple">🧬 Bioinformatics</span>
-      <span class="pill accent">📊 Data Pipelines</span>
-      <span class="pill gold">🔬 SuperPro</span>
+      <span class="pill accent">Bioprocess Optimization</span>
+      <span class="pill green">Wastewater AI</span>
+      <span class="pill purple">Bioinformatics</span>
+      <span class="pill accent">Data Pipelines</span>
+      <span class="pill gold">SuperPro</span>
     </div>
   </template>
 
   <template id="tpl-education">
-    <div class="p-eyebrow"><span class="dot"></span>🎓 Education</div>
+    <div class="p-eyebrow"><span class="dot"></span>Education</div>
     <h2 class="p-title">Education</h2>
     <div class="timeline">
       <div class="t-item">
@@ -717,15 +718,15 @@
         <div class="org"><span class="hl">Asia Pacific University (APU)</span> · Malaysia</div>
         <div class="date">2024–2025 · GPA 3.7/4 · Data Engineering</div>
         <ul>
-          <li>Thesis: <strong style="color:var(--bio-green)">ML for Wastewater Process Performance</strong></li>
-          <li>Dual Degree with <strong style="color:var(--gold)">De Montfort University (DMU)</strong>, UK</li>
+          <li>Thesis: <strong style="color:var(--theme-green)">ML for Wastewater Process Performance</strong></li>
+          <li>Dual Degree with <strong style="color:var(--theme-gold)">De Montfort University (DMU)</strong>, UK</li>
         </ul>
       </div>
       <div class="t-item">
         <h4>M.Sc. Chemical Engineering — Biotechnology</h4>
         <div class="org"><span class="hl">Islamic Azad University</span> · Quchan, Iran</div>
         <div class="date">2013–2016 · GPA 18.14/20</div>
-        <ul><li>Thesis: Hydrocarbon Sludge Biodegradation · <strong style="color:var(--dna-blue)">SuperPro</strong> simulation</li></ul>
+        <ul><li>Thesis: Hydrocarbon Sludge Biodegradation · <strong style="color:var(--theme-blue)">SuperPro</strong> simulation</li></ul>
       </div>
       <div class="t-item" style="border-bottom:none;padding-bottom:0">
         <h4>B.Sc. Chemical Engineering — Refining</h4>
@@ -736,7 +737,7 @@
   </template>
 
   <template id="tpl-experience">
-    <div class="p-eyebrow"><span class="dot"></span>⚙️ Experience</div>
+    <div class="p-eyebrow"><span class="dot"></span>Experience</div>
     <h2 class="p-title">Industry Experience</h2>
     <div class="timeline">
       <div class="t-item">
@@ -777,20 +778,20 @@
   </template>
 
   <template id="tpl-projects">
-    <div class="p-eyebrow"><span class="dot"></span>🚀 Projects</div>
+    <div class="p-eyebrow"><span class="dot"></span>Projects</div>
     <h2 class="p-title">Bio-Data Projects</h2>
     <div class="proj">
-      <div class="proj-head"><h4>🧬 MachineLearning-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/MachineLearning-Theo" target="_blank">__GH__</a></div>
+      <div class="proj-head"><h4>MachineLearning-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/MachineLearning-Theo" target="_blank">__GH__</a></div>
       <p>ML models for wastewater process optimization and energy reduction.</p>
       <div class="pills"><span class="pill accent">Python</span><span class="pill">scikit-learn</span><span class="pill">XGBoost</span></div>
     </div>
     <div class="proj">
-      <div class="proj-head"><h4>🔄 Airflow-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/Airflow_Theo" target="_blank">__GH__</a></div>
+      <div class="proj-head"><h4>Airflow-Theo</h4><a class="gh" href="https://github.com/AminMosallanejad339/Airflow_Theo" target="_blank">__GH__</a></div>
       <p>Automated ETL pipelines for environmental sensor data using Apache Airflow.</p>
       <div class="pills"><span class="pill accent">Airflow</span><span class="pill">Docker</span><span class="pill">Python</span><span class="pill">PostgreSQL</span></div>
     </div>
     <div class="proj" style="border-bottom:none;padding-bottom:0">
-      <div class="proj-head"><h4>📊 LabForLinux-Pro</h4><a class="gh" href="https://github.com/AminMosallanejad339/LabForLinux_Pro" target="_blank">__GH__</a></div>
+      <div class="proj-head"><h4>LabForLinux-Pro</h4><a class="gh" href="https://github.com/AminMosallanejad339/LabForLinux_Pro" target="_blank">__GH__</a></div>
       <p>Interactive dashboard for real-time water quality monitoring with Streamlit.</p>
       <div class="pills"><span class="pill green">Streamlit</span><span class="pill">Plotly</span><span class="pill">Analytics</span></div>
     </div>
@@ -798,28 +799,28 @@
   </template>
 
   <template id="tpl-publications">
-    <div class="p-eyebrow"><span class="dot"></span>📄 Publications</div>
+    <div class="p-eyebrow"><span class="dot"></span>Publications</div>
     <h2 class="p-title">Research</h2>
     <p class="p-lead">Peer-reviewed work in biotechnology and environmental engineering.</p>
     <div class="pub">
       <div class="pt">Biodegradation of Gasoline &amp; Toluene in South Pars Gas Complex Using SuperPro Simulation</div>
       <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Fasihi, M.</div>
-      <div class="pj">⭐ 3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia (2016)</div>
+      <div class="pj">3rd Int'l Conference on Engineering &amp; Technology · Batumi, Georgia (2016)</div>
       <div class="pl">🔗 <a href="https://civilica.com/doc/557571" target="_blank">civilica.com/doc/557571</a></div>
     </div>
     <div class="pub" style="border-bottom:none;padding-bottom:0">
       <div class="pt">Industrial Wastewater Treatment Performance — Activated Sludge &amp; Trickling Filter</div>
       <div class="pa">Mosallanejad, A.; Khosraviyar, S.; Shiri, S.S.</div>
-      <div class="pj">⭐ 3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey (2016)</div>
+      <div class="pj">3rd Int'l Conference on Science &amp; Engineering · Istanbul, Turkey (2016)</div>
       <div class="pl">🔗 <a href="https://civilica.com/doc/491464" target="_blank">civilica.com/doc/491464</a></div>
     </div>
   </template>
 
   <template id="tpl-skills">
-    <div class="p-eyebrow"><span class="dot"></span>🧰 Skills</div>
+    <div class="p-eyebrow"><span class="dot"></span>Skills</div>
     <h2 class="p-title">Bio-Data Stack</h2>
     <div style="margin:6px 0 12px">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">🧬 Bioinformatics &amp; Biotech</div>
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Bioinformatics &amp; Biotech</div>
       <div class="badge-grid">
         <span class="badge green">SuperPro</span>
         <span class="badge">STOAT</span>
@@ -829,7 +830,7 @@
       </div>
     </div>
     <div style="margin:10px 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">🤖 Data Science &amp; AI</div>
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Data Science &amp; AI</div>
       <div class="badge-grid">
         <span class="badge accent">Python</span>
         <span class="badge">R</span>
@@ -840,7 +841,7 @@
       </div>
     </div>
     <div style="margin:10px 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">⚙️ Data Engineering</div>
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Data Engineering</div>
       <div class="badge-grid">
         <span class="badge accent">Spark</span>
         <span class="badge">Docker</span>
@@ -852,7 +853,7 @@
       </div>
     </div>
     <div style="margin:10px 0 0">
-      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">📊 Analytics &amp; Visualization</div>
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:4px">Analytics &amp; Visualization</div>
       <div class="badge-grid">
         <span class="badge purple">Tableau</span>
         <span class="badge purple">SAS</span>
@@ -863,7 +864,7 @@
   </template>
 
   <template id="tpl-certifications">
-    <div class="p-eyebrow"><span class="dot"></span>📜 Certifications</div>
+    <div class="p-eyebrow"><span class="dot"></span>Certifications</div>
     <h2 class="p-title">Professional Certifications</h2>
     <div class="timeline">
       <div class="t-item">
@@ -890,11 +891,11 @@
   </template>
 
   <template id="tpl-languages">
-    <div class="p-eyebrow"><span class="dot"></span>🌐 Languages</div>
+    <div class="p-eyebrow"><span class="dot"></span>Languages</div>
     <h2 class="p-title">Language Proficiency</h2>
     <div class="timeline">
       <div class="t-item">
-        <h4>English <span style="color:var(--bio-green);font-weight:400;font-size:12px">· TOEFL iBT 98/120</span></h4>
+        <h4>English <span style="color:var(--theme-green);font-weight:400;font-size:12px">· TOEFL iBT 98/120</span></h4>
         <div class="org">Reading: 28 | Listening: 29 | Writing: 25 | Speaking: 16</div>
         <div class="date">Fully exempt from institutional English testing (APU · DMU Dual Degree)</div>
       </div>
@@ -906,7 +907,7 @@
   </template>
 
   <template id="tpl-references">
-    <div class="p-eyebrow"><span class="dot"></span>📌 References</div>
+    <div class="p-eyebrow"><span class="dot"></span>References</div>
     <h2 class="p-title">References</h2>
     <p class="p-lead">Academic and professional references available upon request.</p>
     <div class="ref-grid">
@@ -926,9 +927,9 @@
   </template>
 
   <template id="tpl-contact">
-    <div class="p-eyebrow"><span class="dot"></span>📬 Contact</div>
+    <div class="p-eyebrow"><span class="dot"></span>Contact</div>
     <h2 class="p-title">Let's Connect</h2>
-    <p class="p-lead">Open to research collaboration, consulting, and data engineering in <strong style="color:var(--bio-green)">biotech</strong>, <strong style="color:var(--dna-blue)">bioinformatics</strong>, and <strong style="color:var(--ai-purple)">industrial AI</strong>.</p>
+    <p class="p-lead">Open to research collaboration, consulting, and data engineering in <strong style="color:var(--theme-green)">biotech</strong>, <strong style="color:var(--theme-blue)">bioinformatics</strong>, and <strong style="color:var(--theme-purple)">industrial AI</strong>.</p>
     <div class="contact-row">
       <svg class="ico" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 6L12 13L2 6M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6l10 7l10-7z"/></svg>
       <div><div class="k">Email</div><div class="v">mosallanejadamin1400@gmail.com</div></div>
@@ -943,7 +944,7 @@
     </div>
     <div class="contact-row" style="border-bottom:1px solid rgba(255,255,255,0.04)">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.544 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-      <div><div class="k">GitHub</div><div class="v"><a href="https://github.com/AminMosallanejad339" target="_blank" style="color:var(--dna-blue);text-decoration:none">AminMosallanejad339</a></div></div>
+      <div><div class="k">GitHub</div><div class="v"><a href="https://github.com/AminMosallanejad339" target="_blank" style="color:var(--theme-blue);text-decoration:none">AminMosallanejad339</a></div></div>
     </div>
     <a class="btn" href="https://www.linkedin.com/in/amin-mosallanejad" target="_blank">
       <span>Connect on LinkedIn</span>
